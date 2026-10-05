@@ -184,7 +184,7 @@ export function BottomSheet({
       onKeyDown={onKeyDown}
       className={cn(
         'fixed inset-x-0 bottom-0 z-(--z-sheet) mx-auto flex max-h-[88dvh] w-full max-w-sheet flex-col overflow-hidden',
-        'rounded-t-xl bg-surface/95 shadow-elevated backdrop-blur-xl backdrop-saturate-150 dark:bg-surface-secondary/95',
+        'rounded-t-xl bg-sheet/95 shadow-elevated backdrop-blur-xl backdrop-saturate-150',
         'pb-[env(safe-area-inset-bottom)] sm:bottom-3 sm:w-[calc(100%-1.5rem)] sm:rounded-xl sm:pb-0',
         // Hidden until measured so it never flashes open on load.
         !metrics && 'invisible',

@@ -46,6 +46,8 @@
   --color-ring: oklch(0.6 0.15 255);
   --color-overlay: oklch(0.2 0.01 270 / 0.32);
   --color-chrome: oklch(0.992 0.001 270 / 0.82);
+  /* The habit panel (bottom sheet). */
+  --color-sheet: oklch(1 0 0);
   /* Sliding thumb of segmented controls. */
   --color-control-thumb: oklch(1 0 0);
 
@@ -345,6 +347,7 @@
   --color-overlay: oklch(0 0 0 / 0.55);
   --color-chrome: oklch(0.165 0.004 270 / 0.82);
   --color-control-thumb: oklch(0.38 0.008 270);
+  --color-sheet: oklch(0.215 0.006 270);
 
   --color-habit-green: oklch(0.5 0.13 150);
   --color-habit-orange: oklch(0.67 0.15 60);
