@@ -4,12 +4,15 @@ import { useSwipe } from '@/hooks'
 import { getPeriodKey } from '@/lib/calendar'
 import { cn } from '@/lib/utils'
 import { useAppState, useCalendarNavigation } from '@/state'
-import type { CalendarView as View } from '@/types'
+import type { CalendarView as View, Weekday } from '@/types'
 
 import { DayCalendar } from './DayCalendar'
-import { MonthScroller } from './MonthScroller'
+import { MonthCalendar } from './MonthCalendar'
+import { PeriodScroller } from './PeriodScroller'
 import { WeekCalendar } from './WeekCalendar'
 import { YearCalendar } from './YearCalendar'
+
+const SCROLLING_VIEWS: readonly View[] = ['month', 'week']
 
 type Transition = 'next' | 'prev' | 'switch' | 'none'
 
@@ -39,8 +42,8 @@ export function CalendarView({ className }: { className?: string }) {
     setTransition(
       previous.view !== view
         ? 'switch'
-        : // Month view moves by scrolling, so it needs no slide of its own.
-          view === 'month'
+        : // Month and Week views move by scrolling, so they need no slide of their own.
+          SCROLLING_VIEWS.includes(view)
           ? 'none'
           : date.getTime() > previous.time
             ? 'next'
@@ -51,25 +54,33 @@ export function CalendarView({ className }: { className?: string }) {
 
   return (
     <div {...swipe} className={cn('touch-pan-y overflow-x-hidden', className)}>
-      {/* Month view stays mounted across months so its scroll position survives. */}
+      {/* Scrolling views stay mounted across periods so their scroll position survives. */}
       <div
-        key={view === 'month' ? view : `${view}:${periodKey}`}
+        key={SCROLLING_VIEWS.includes(view) ? view : `${view}:${periodKey}`}
         className={cn('h-full', TRANSITION_CLASS[transition])}
       >
-        {renderView(view, date)}
+        {renderView(view, date, settings.calendar.weekStartsOn)}
       </div>
     </div>
   )
 }
 
-function renderView(view: View, date: Date) {
+function renderView(view: View, date: Date, weekStartsOn: Weekday) {
   switch (view) {
     case 'year':
       return <YearCalendar date={date} />
     case 'month':
-      return <MonthScroller date={date} />
     case 'week':
-      return <WeekCalendar date={date} />
+      return (
+        <PeriodScroller
+          date={date}
+          unit={view}
+          weekStartsOn={weekStartsOn}
+          renderPeriod={(start) =>
+            view === 'month' ? <MonthCalendar date={start} /> : <WeekCalendar date={start} />
+          }
+        />
+      )
     case 'day':
       return <DayCalendar date={date} />
   }

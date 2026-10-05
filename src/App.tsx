@@ -1,5 +1,7 @@
+import { AnalyticsDialog } from '@/components/analytics/AnalyticsDialog'
 import { CalendarView } from '@/components/calendar/CalendarView'
 import { HabitPanel } from '@/components/habits/HabitPanel'
+import { StreakGradient } from '@/components/habits/StreakBadge'
 import { TopNavigation } from '@/components/navigation/TopNavigation'
 import { SettingsDialog } from '@/components/settings/SettingsDialog'
 import { TooltipProvider } from '@/components/ui'
@@ -18,6 +20,8 @@ export function App() {
         </main>
         <HabitPanel />
         <SettingsDialog />
+        <AnalyticsDialog />
+        <StreakGradient />
       </div>
     </TooltipProvider>
   )

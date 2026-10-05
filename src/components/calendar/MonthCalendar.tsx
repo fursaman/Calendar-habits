@@ -1,8 +1,9 @@
 import { isSameMonth } from 'date-fns'
+import { useMemo } from 'react'
 
 import { useGridNavigation, useMonthGrid, useToday, useVisibleHabits } from '@/hooks'
 import { formatMonthYear, toDateKey } from '@/lib/calendar'
-import { getDay } from '@/lib/habits'
+import { getDay, getStreakLinks } from '@/lib/habits'
 import { useAppActions, useAppState } from '@/state'
 
 import { CalendarDayCell } from './CalendarDayCell'
@@ -17,6 +18,12 @@ export function MonthCalendar({ date }: { date: Date }) {
   const { weekStartsOn } = settings.calendar
   const weeks = useMonthGrid(date, weekStartsOn)
   const onKeyDown = useGridNavigation()
+  const single = habits.length === 1 ? habits[0] : undefined
+  const streaks = useMemo(
+    () =>
+      single ? getStreakLinks(completions, single.id, weeks.flat().map(toDateKey)) : undefined,
+    [single, completions, weeks],
+  )
 
   return (
     <div
@@ -50,6 +57,9 @@ export function MonthCalendar({ date }: { date: Date }) {
                   isSelected={key === activeDate}
                   isOutside={!isSameMonth(day, date)}
                   onSelect={selectDate}
+                  joinsPrevious={streaks?.get(key)?.joinsPrevious}
+                  joinsNext={streaks?.get(key)?.joinsNext}
+                  streakLength={streaks?.get(key)?.length}
                 />
               )
             })}

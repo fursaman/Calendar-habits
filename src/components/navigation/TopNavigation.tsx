@@ -1,4 +1,4 @@
-import { CalendarCheck2, Settings } from 'lucide-react'
+import { ChartNoAxesColumn, Settings } from 'lucide-react'
 
 import { CalendarViewSwitcher } from '@/components/calendar/CalendarViewSwitcher'
 import { HabitFilterBar } from '@/components/habits/HabitFilterBar'
@@ -8,6 +8,7 @@ import { fromDateKey, getPeriodKey } from '@/lib/calendar'
 import { cn } from '@/lib/utils'
 import { useAppActions, useAppState, useCalendarNavigation } from '@/state'
 
+import { AppIcon } from './AppIcon'
 import { DateNavigator } from './DateNavigator'
 import { PeriodPicker } from './PeriodPicker'
 
@@ -18,7 +19,7 @@ import { PeriodPicker } from './PeriodPicker'
  */
 export function TopNavigation() {
   const { settings } = useAppState()
-  const { setSettingsOpen } = useAppActions()
+  const { setSettingsOpen, setAnalyticsOpen } = useAppActions()
   const { date, view, go, goToToday } = useCalendarNavigation()
   const today = useToday()
   const { weekStartsOn } = settings.calendar
@@ -26,14 +27,25 @@ export function TopNavigation() {
   const showingToday =
     getPeriodKey(date, view, weekStartsOn) === getPeriodKey(fromDateKey(today), view, weekStartsOn)
 
-  const settingsButton = (
-    <IconButton
-      icon={<Settings />}
-      label="Settings"
-      tooltip
-      variant="subtle"
-      onClick={() => setSettingsOpen(true)}
-    />
+  const actions = (
+    <div className="flex items-center gap-1.5 pl-1">
+      <IconButton
+        icon={<ChartNoAxesColumn />}
+        label="Analytics"
+        tooltip
+        variant="default"
+        size="sm"
+        onClick={() => setAnalyticsOpen(true)}
+      />
+      <IconButton
+        icon={<Settings />}
+        label="Settings"
+        tooltip
+        variant="default"
+        size="sm"
+        onClick={() => setSettingsOpen(true)}
+      />
+    </div>
   )
 
   const navigator = (
@@ -55,26 +67,27 @@ export function TopNavigation() {
         {/* Desktop and tablet */}
         <div className="hidden h-14 grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 lg:grid lg:px-6">
           <div className="flex items-center gap-2">
-            <span className="inline-flex size-7 items-center justify-center rounded-md bg-foreground text-background">
-              <CalendarCheck2 className="size-4" aria-hidden="true" />
-            </span>
+            <AppIcon />
             <span className="text-nav">Habits</span>
           </div>
           <CalendarViewSwitcher className="w-80" />
           <div className="flex min-w-0 items-center justify-end gap-1">
-            <PeriodPicker className="mr-1" />
+            <PeriodPicker className="mr-1 shrink-0" />
             {navigator}
-            {settingsButton}
+            {actions}
           </div>
         </div>
 
         {/* Phones */}
         <div className="space-y-2 px-3 pt-1.5 pb-2 lg:hidden">
           <div className="flex h-11 items-center justify-between gap-1">
-            <PeriodPicker className="-ml-1" />
+            <div className="flex min-w-0 items-center gap-1.5">
+              <AppIcon className="size-6" />
+              <PeriodPicker compact className="-ml-1" />
+            </div>
             <div className="flex items-center">
               {navigator}
-              {settingsButton}
+              {actions}
             </div>
           </div>
           <CalendarViewSwitcher className="w-full sm:mx-auto sm:max-w-sm" />

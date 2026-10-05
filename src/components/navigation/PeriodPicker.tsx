@@ -13,7 +13,14 @@ import { useAppActions, useAppState, useCalendarNavigation } from '@/state'
  * The current period as a title. Clicking it opens a month picker for
  * jumping to any date without stepping through periods.
  */
-export function PeriodPicker({ className }: { className?: string }) {
+export function PeriodPicker({
+  className,
+  compact = false,
+}: {
+  className?: string
+  /** Shorter title for narrow toolbars. */
+  compact?: boolean
+}) {
   const { activeDate, settings } = useAppState()
   const { setActiveDate } = useAppActions()
   const { date, view } = useCalendarNavigation()
@@ -38,7 +45,7 @@ export function PeriodPicker({ className }: { className?: string }) {
         aria-label={`${formatPeriod(date, view, weekStartsOn)}, choose a date`}
       >
         <span className="truncate text-nav tabular-nums">
-          {formatPeriod(date, view, weekStartsOn)}
+          {formatPeriod(date, view, weekStartsOn, undefined, compact)}
         </span>
         <ChevronDown
           aria-hidden="true"

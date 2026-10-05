@@ -75,7 +75,7 @@ const WeekDay = memo(function WeekDay({
         <DayNumber label={formatDayOfMonth(date)} isToday={isToday} isSelected={isSelected} />
       </button>
       <div
-        className="flex min-w-0 flex-1 items-center justify-between gap-1 sm:flex-none sm:flex-col sm:items-center sm:justify-start sm:gap-2 lg:items-stretch"
+        className="flex min-w-0 flex-1 items-start gap-1 sm:flex-none sm:flex-col sm:items-center sm:gap-2 lg:items-stretch"
         title={isFuture ? 'You can mark habits for this day once it arrives' : undefined}
       >
         {habits.map((habit) => {
@@ -88,7 +88,9 @@ const WeekDay = memo(function WeekDay({
               disabled={isFuture}
               label={`${habit.name}, ${shortDate}${done ? ', completed' : ''}`}
               onClick={() => onToggle(dateKey, habit.id)}
-              showName="lg"
+              showName={isSelected ? 'below' : 'lg'}
+              // Fixed width on phones keeps icons in the same columns on every row.
+              className="max-sm:w-16"
             />
           )
         })}
