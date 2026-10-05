@@ -66,6 +66,11 @@
   --color-habit-graphite: oklch(0.55 0.01 270);
   /* Check marks drawn on top of a habit color. */
   --color-on-habit: oklch(1 0 0);
+  /* Island-style popups stay dark in both themes, like the hardware they evoke. */
+  --color-island: oklch(0.14 0.004 270);
+  --color-island-raised: oklch(0.22 0.006 270);
+  --color-island-foreground: oklch(0.97 0 0);
+  --color-island-muted: oklch(0.62 0.008 270);
   /* Streak flame gradient. */
   --color-streak-from: oklch(0.82 0.16 85);
   --color-streak-to: oklch(0.62 0.22 30);
@@ -197,6 +202,9 @@
   --animate-view-prev: view-prev var(--duration-view) var(--ease-emphasized);
   --animate-view-switch: view-switch var(--duration-view) var(--ease-emphasized);
   --animate-check: check var(--duration-standard) var(--ease-emphasized);
+  --animate-island-in: island-in 520ms var(--ease-pop) both;
+  --animate-island-out: island-out var(--duration-emphasized) var(--ease-exit) both;
+  --animate-flame: flame 1.4s ease-in-out infinite;
   --animate-ring-fill: ring-fill 900ms var(--ease-emphasized) both;
   --animate-bar-grow: bar-grow var(--duration-emphasized) var(--ease-emphasized) both;
   --animate-check-pop: check var(--duration-emphasized) var(--ease-pop) both;
@@ -258,6 +266,33 @@
     from {
       transform: scale(0.6);
       opacity: 0;
+    }
+  }
+  /* Grows out of a small pill at the top edge, like a Dynamic Island panel. */
+  @keyframes island-in {
+    from {
+      opacity: 0;
+      transform: translateY(-60%) scale(0.35, 0.25);
+      border-radius: 999px;
+    }
+    60% {
+      opacity: 1;
+    }
+  }
+  @keyframes island-out {
+    to {
+      opacity: 0;
+      transform: translateY(-60%) scale(0.35, 0.25);
+      border-radius: 999px;
+    }
+  }
+  @keyframes flame {
+    0%,
+    100% {
+      transform: scale(1) rotate(-2deg);
+    }
+    50% {
+      transform: scale(1.08) rotate(2deg);
     }
   }
   @keyframes ring-fill {

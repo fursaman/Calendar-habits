@@ -14,6 +14,7 @@ export function createInitialState(data: AppData, now: Date = new Date()): AppSt
     panel: 'collapsed',
     settingsOpen: false,
     analyticsOpen: false,
+    celebration: null,
   }
 }
 
@@ -77,5 +78,9 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, settingsOpen: action.open }
     case 'analytics/setOpen':
       return { ...state, analyticsOpen: action.open }
+    case 'celebration/show':
+      return { ...state, celebration: action.celebration }
+    case 'celebration/dismiss':
+      return state.celebration ? { ...state, celebration: null } : state
   }
 }

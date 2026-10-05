@@ -52,6 +52,9 @@ export function useAppActions() {
         dispatch({ type: 'panel/setSnap', snap }),
       setSettingsOpen: (open: boolean) => dispatch({ type: 'settings/setOpen', open }),
       setAnalyticsOpen: (open: boolean) => dispatch({ type: 'analytics/setOpen', open }),
+      celebrate: (celebration: Payload<'celebration/show'>['celebration']) =>
+        dispatch({ type: 'celebration/show', celebration }),
+      dismissCelebration: () => dispatch({ type: 'celebration/dismiss' }),
     }),
     [dispatch],
   )

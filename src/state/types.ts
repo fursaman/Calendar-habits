@@ -8,6 +8,8 @@ import type {
   UserSettings,
 } from '@/types'
 
+export type StreakCelebration = { habitId: HabitId; date: DateKey; days: number }
+
 /** Snap positions of the habit panel. */
 export const PANEL_SNAPS = ['collapsed', 'half', 'full'] as const
 export type PanelSnap = (typeof PANEL_SNAPS)[number]
@@ -24,6 +26,8 @@ export type AppState = {
   panel: PanelSnap
   settingsOpen: boolean
   analyticsOpen: boolean
+  /** Streak popup shown after checking today's habit; null when hidden. */
+  celebration: StreakCelebration | null
 }
 
 export type AppAction =
@@ -40,3 +44,5 @@ export type AppAction =
   | { type: 'panel/setSnap'; snap: PanelSnap }
   | { type: 'settings/setOpen'; open: boolean }
   | { type: 'analytics/setOpen'; open: boolean }
+  | { type: 'celebration/show'; celebration: StreakCelebration }
+  | { type: 'celebration/dismiss' }

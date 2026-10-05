@@ -35,6 +35,13 @@ describe('appReducer', () => {
     expect(full.panel).toBe('full')
   })
 
+  it('shows and dismisses a streak celebration', () => {
+    const celebration = { habitId: 'sport', date: '2026-10-05' as DateKey, days: 3 }
+    const shown = appReducer(initial, { type: 'celebration/show', celebration })
+    expect(shown.celebration).toEqual(celebration)
+    expect(appReducer(shown, { type: 'celebration/dismiss' }).celebration).toBeNull()
+  })
+
   it('removing a habit clears its completions and filter', () => {
     const date = '2026-10-05' as DateKey
     let state = appReducer(initial, { type: 'completions/toggle', date, habitId: 'sport' })

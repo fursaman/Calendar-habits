@@ -1,5 +1,5 @@
 export { AppStateProvider } from './AppStateProvider'
 export { useAppActions, useAppDispatch, useAppState, useCalendarNavigation } from './hooks'
 export { appReducer, createInitialState } from './reducer'
-export type { AppAction, AppState, PanelSnap } from './types'
+export type { AppAction, AppState, PanelSnap, StreakCelebration } from './types'
 export { PANEL_SNAPS } from './types'
