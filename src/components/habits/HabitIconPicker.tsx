@@ -23,7 +23,7 @@ export function HabitIconPicker({
       value={value ?? ''}
       onValueChange={(next) => onValueChange(next as HabitIcon)}
       aria-labelledby={labelledBy}
-      className="grid grid-cols-5 gap-1.5 sm:grid-cols-10"
+      className="grid grid-cols-7 gap-1 sm:grid-cols-10"
       style={{ '--habit': habitColorVar(color) } as CSSProperties}
     >
       {HABIT_ICONS.map((icon) => {

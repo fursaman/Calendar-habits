@@ -90,6 +90,11 @@ export function HabitManager() {
           HABIT_COLORS,
         )}
         takenNames={takenNames}
+        onDelete={() => {
+          if (!editingHabit) return
+          setEditing(null)
+          setDeleting(editingHabit)
+        }}
         onSave={(draft) =>
           editingHabit ? updateHabit({ habitId: editingHabit.id, changes: draft }) : addHabit(draft)
         }

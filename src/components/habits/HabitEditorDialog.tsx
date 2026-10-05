@@ -1,3 +1,4 @@
+import { Trash2 } from 'lucide-react'
 import { type FormEvent, useId, useRef, useState } from 'react'
 
 import { Button, Dialog, DialogContent, Input, Label } from '@/components/ui'
@@ -19,6 +20,8 @@ export type HabitEditorDialogProps = {
   onSave: (draft: HabitDraft) => void
   /** Names already in use, to prevent confusing duplicates. */
   takenNames: readonly string[]
+  /** Shown for existing habits; the caller asks for confirmation. */
+  onDelete?: () => void
 }
 
 export function HabitEditorDialog(props: HabitEditorDialogProps) {
@@ -36,6 +39,7 @@ function HabitEditorForm({
   defaultColor,
   onSave,
   takenNames,
+  onDelete,
 }: HabitEditorDialogProps) {
   const [name, setName] = useState(habit?.name ?? '')
   const [color, setColor] = useState<HabitColor>(habit?.color ?? defaultColor)
@@ -67,6 +71,12 @@ function HabitEditorForm({
       }}
       footer={
         <>
+          {habit && onDelete && (
+            <Button variant="destructive-ghost" className="mr-auto" onClick={onDelete}>
+              <Trash2 aria-hidden="true" />
+              Delete
+            </Button>
+          )}
           <Button variant="secondary" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
