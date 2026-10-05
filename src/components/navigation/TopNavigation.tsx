@@ -88,7 +88,7 @@ export function TopNavigation() {
         <div className="space-y-2 px-3 pt-2 pb-2 lg:hidden">
           <div className="flex h-13 items-center justify-between gap-1">
             <div className="flex min-w-0 items-center gap-1.5">
-              <AppIcon className="size-7" />
+              <AppIcon />
               <PeriodPicker compact className="-ml-1" />
             </div>
             <div className="flex items-center">

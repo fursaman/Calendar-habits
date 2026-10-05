@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 
-/** The app mark (same file as the favicon). */
+/** The app mark (same file as the favicon), sized like the toolbar buttons. */
 export function AppIcon({ className }: { className?: string }) {
   return (
     <img
