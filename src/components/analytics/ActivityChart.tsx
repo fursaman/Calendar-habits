@@ -1,4 +1,4 @@
-import { type CSSProperties, useState } from 'react'
+import { type CSSProperties, type SyntheticEvent, useRef, useState } from 'react'
 
 import { formatDayOfMonth, formatFullDate, formatMonthYear, formatWeekday } from '@/lib/calendar'
 import { type ActivityBucket, type AnalyticsPeriod, habitColorVar } from '@/lib/habits'
@@ -38,7 +38,18 @@ export type ActivityChartProps = {
  * its breakdown.
  */
 export function ActivityChart({ buckets, habits, period }: ActivityChartProps) {
-  const [active, setActive] = useState<number | null>(null)
+  const chartRef = useRef<HTMLDivElement>(null)
+  /** Hovered/tapped column and its center, in px from the chart's left edge. */
+  const [hover, setHover] = useState<{ index: number; x: number } | null>(null)
+  const active = hover?.index ?? null
+
+  function activate(index: number, event: SyntheticEvent<HTMLElement>) {
+    const chart = chartRef.current?.getBoundingClientRect()
+    const column = event.currentTarget.getBoundingClientRect()
+    if (!chart) return
+    setHover({ index, x: column.left + column.width / 2 - chart.left })
+  }
+  const clear = () => setHover(null)
   const max =
     period === 'year'
       ? niceMax(Math.max(...buckets.map((bucket) => bucket.total), habits.length))
@@ -47,7 +58,7 @@ export function ActivityChart({ buckets, habits, period }: ActivityChartProps) {
   const activeBucket = active === null ? null : buckets[active]
 
   return (
-    <div className="relative">
+    <div ref={chartRef} className="relative">
       <div className="flex gap-2">
         {/* Y axis */}
         <div className="relative w-6 shrink-0 text-right text-caption text-muted-foreground tabular-nums">
@@ -82,11 +93,11 @@ export function ActivityChart({ buckets, habits, period }: ActivityChartProps) {
                 key={bucket.days[0]}
                 type="button"
                 aria-label={`${bucketLabel(bucket, period)}: ${bucket.total} completed`}
-                onPointerEnter={() => setActive(index)}
-                onPointerLeave={() => setActive(null)}
-                onFocus={() => setActive(index)}
-                onBlur={() => setActive(null)}
-                onClick={() => setActive(index)}
+                onPointerEnter={(event) => activate(index, event)}
+                onPointerLeave={clear}
+                onFocus={(event) => activate(index, event)}
+                onBlur={clear}
+                onClick={(event) => activate(index, event)}
                 className="group flex h-full min-w-0 flex-1 items-end justify-center px-px outline-offset-[-2px]"
               >
                 <span
@@ -131,12 +142,15 @@ export function ActivityChart({ buckets, habits, period }: ActivityChartProps) {
       </div>
 
       {/* Tooltip */}
-      {activeBucket && active !== null && (
+      {/* Above the column, centered on it but clamped so it never leaves the chart. */}
+      {activeBucket && hover && (
         <div
           role="status"
-          className="pointer-events-none absolute -top-2 z-10 min-w-40 -translate-x-1/2 -translate-y-full animate-fade-in rounded-md bg-surface p-2.5 shadow-elevated dark:bg-surface-tertiary"
+          className="pointer-events-none absolute z-10 w-44 -translate-y-full animate-fade-in rounded-md bg-surface p-2.5 shadow-elevated dark:bg-surface-tertiary"
           style={{
-            left: `calc(2rem + (100% - 2rem) * ${(active + 0.5) / buckets.length})`,
+            left: `clamp(0px, ${hover.x}px - 5.5rem, 100% - 11rem)`,
+            // Just above the top of the hovered column (the plot is 10rem tall).
+            top: `calc(${1 - Math.min(activeBucket.total / max, 1)} * 10rem - 0.5rem)`,
           }}
         >
           <p className="mb-1.5 text-label text-foreground">{bucketLabel(activeBucket, period)}</p>
@@ -148,7 +162,7 @@ export function ActivityChart({ buckets, habits, period }: ActivityChartProps) {
                   className="size-2 rounded-pill"
                   style={{ backgroundColor: habitColorVar(habit.color) }}
                 />
-                <span className="flex-1 text-muted-foreground">{habit.name}</span>
+                <span className="min-w-0 flex-1 truncate text-muted-foreground">{habit.name}</span>
                 <span className="font-medium text-foreground tabular-nums">
                   {period === 'year'
                     ? (activeBucket.counts[habit.id] ?? 0)
