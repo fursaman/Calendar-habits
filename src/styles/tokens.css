@@ -1,0 +1,196 @@
+/*
+ * Design tokens: the single source of truth for visual values.
+ *
+ * Tokens are declared in a Tailwind `@theme` block, so each one is both a
+ * CSS custom property (e.g. --color-surface) and a utility (bg-surface).
+ * Components never use raw colors, sizes, or durations.
+ *
+ * Theme is selected by `data-theme="light" | "dark"` on <html>; the dark
+ * block below only overrides values, so utilities switch automatically.
+ * The "system" preference is resolved to light or dark at runtime.
+ */
+
+@theme static {
+  /* Clear Tailwind defaults so only our tokens exist. */
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --animate-*: initial;
+
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* ---------- Color: semantic (light) ---------- */
+  --color-background: oklch(0.99 0.002 260);
+  --color-foreground: oklch(0.2 0.015 260);
+  --color-surface: oklch(1 0 0);
+  --color-surface-secondary: oklch(0.97 0.004 260);
+  --color-surface-tertiary: oklch(0.94 0.006 260);
+  --color-border: oklch(0.88 0.008 260);
+  --color-border-subtle: oklch(0.93 0.005 260);
+  --color-muted: oklch(0.95 0.005 260);
+  --color-muted-foreground: oklch(0.48 0.015 260);
+  --color-primary: oklch(0.5 0.2 268);
+  --color-primary-foreground: oklch(0.99 0 0);
+  --color-destructive: oklch(0.55 0.21 27);
+  --color-destructive-foreground: oklch(0.99 0 0);
+  --color-success: oklch(0.55 0.15 150);
+  --color-warning: oklch(0.7 0.16 70);
+  --color-ring: oklch(0.55 0.2 268);
+  --color-overlay: oklch(0.15 0.01 260 / 0.45);
+
+  /* ---------- Color: habits (light) ---------- */
+  --color-habit-sport: oklch(0.64 0.19 40);
+  --color-habit-healthy-eating: oklch(0.62 0.16 145);
+  --color-habit-no-doomscrolling: oklch(0.56 0.2 295);
+  --color-habit-reading: oklch(0.58 0.15 240);
+
+  /* ---------- Typography ---------- */
+  --font-sans:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji';
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+
+  --text-xs--line-height: 1.35;
+  --text-sm--line-height: 1.5;
+  --text-base--line-height: 1.5;
+  --text-lg--line-height: 1.35;
+  --text-xl--line-height: 1.35;
+  --text-2xl--line-height: 1.2;
+  --text-3xl--line-height: 1.2;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ---------- Spacing (4px grid) ---------- */
+  --spacing: 0.25rem;
+
+  /* ---------- Sizing ---------- */
+  --spacing-touch: 2.75rem; /* 44px minimum tap target */
+  --spacing-control-sm: 2rem;
+  --spacing-control-md: 2.5rem;
+  --spacing-control-lg: 3rem;
+  --container-content: 40rem;
+
+  /* ---------- Radius ---------- */
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* ---------- Elevation ---------- */
+  --shadow-xs: 0 1px 2px 0 oklch(0.2 0.02 260 / 0.06);
+  --shadow-sm: 0 1px 3px 0 oklch(0.2 0.02 260 / 0.1), 0 1px 2px -1px oklch(0.2 0.02 260 / 0.1);
+  --shadow-md:
+    0 4px 12px -2px oklch(0.2 0.02 260 / 0.12), 0 2px 4px -2px oklch(0.2 0.02 260 / 0.08);
+  --shadow-lg:
+    0 16px 32px -8px oklch(0.2 0.02 260 / 0.18), 0 4px 8px -4px oklch(0.2 0.02 260 / 0.1);
+
+  /* ---------- Motion ---------- */
+  --duration-instant: 0ms;
+  --duration-fast: 120ms;
+  --duration-normal: 200ms;
+  --duration-slow: 320ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.3, 0, 0, 1.15);
+  --ease-exit: cubic-bezier(0.3, 0, 1, 1);
+  --default-transition-duration: var(--duration-normal);
+  --default-transition-timing-function: var(--ease-standard);
+
+  --animate-fade-in: fade-in var(--duration-normal) var(--ease-standard);
+  --animate-fade-out: fade-out var(--duration-fast) var(--ease-exit);
+  --animate-pop-in: pop-in var(--duration-fast) var(--ease-standard);
+  --animate-sheet-in: sheet-in var(--duration-slow) var(--ease-standard);
+  --animate-sheet-out: sheet-out var(--duration-normal) var(--ease-exit);
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+  @keyframes sheet-in {
+    from {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes sheet-out {
+    to {
+      transform: translateY(100%);
+    }
+  }
+
+  /* ---------- Layering ---------- */
+  --z-dropdown: 40;
+  --z-overlay: 50;
+  --z-modal: 60;
+  --z-tooltip: 70;
+}
+
+:root {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --color-background: oklch(0.16 0.008 260);
+  --color-foreground: oklch(0.96 0.004 260);
+  --color-surface: oklch(0.2 0.01 260);
+  --color-surface-secondary: oklch(0.24 0.012 260);
+  --color-surface-tertiary: oklch(0.28 0.014 260);
+  --color-border: oklch(0.34 0.014 260);
+  --color-border-subtle: oklch(0.27 0.012 260);
+  --color-muted: oklch(0.26 0.012 260);
+  --color-muted-foreground: oklch(0.72 0.012 260);
+  --color-primary: oklch(0.7 0.15 268);
+  --color-primary-foreground: oklch(0.16 0.02 268);
+  --color-destructive: oklch(0.66 0.19 25);
+  --color-destructive-foreground: oklch(0.16 0.02 25);
+  --color-success: oklch(0.7 0.15 150);
+  --color-warning: oklch(0.8 0.14 75);
+  --color-ring: oklch(0.72 0.15 268);
+  --color-overlay: oklch(0 0 0 / 0.6);
+
+  --color-habit-sport: oklch(0.72 0.17 42);
+  --color-habit-healthy-eating: oklch(0.74 0.15 145);
+  --color-habit-no-doomscrolling: oklch(0.7 0.17 295);
+  --color-habit-reading: oklch(0.72 0.13 240);
+
+  --shadow-xs: 0 1px 2px 0 oklch(0 0 0 / 0.3);
+  --shadow-sm: 0 1px 3px 0 oklch(0 0 0 / 0.4), 0 1px 2px -1px oklch(0 0 0 / 0.4);
+  --shadow-md: 0 4px 12px -2px oklch(0 0 0 / 0.5), 0 2px 4px -2px oklch(0 0 0 / 0.4);
+  --shadow-lg: 0 16px 32px -8px oklch(0 0 0 / 0.6), 0 4px 8px -4px oklch(0 0 0 / 0.4);
+
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+  }
+}
