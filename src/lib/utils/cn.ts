@@ -20,6 +20,18 @@ const twMerge = extendTailwindMerge({
       ],
       shadow: ['subtle', 'floating', 'elevated', 'modal'],
       radius: ['sm', 'md', 'lg', 'xl', 'pill'],
+      container: ['content', 'sheet', 'dialog'],
+      spacing: [
+        'touch',
+        'control-sm',
+        'control-md',
+        'control-lg',
+        'day-marker',
+        'dot',
+        'dot-sm',
+        'sheet-peek',
+        'cell-min',
+      ],
     },
   },
 })

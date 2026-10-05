@@ -49,11 +49,15 @@
   /* Sliding thumb of segmented controls. */
   --color-control-thumb: oklch(1 0 0);
 
-  /* ---------- Color: habit palette (light) ---------- */
-  --color-habit-green: oklch(0.66 0.16 150);
-  --color-habit-orange: oklch(0.71 0.17 55);
-  --color-habit-purple: oklch(0.58 0.2 302);
-  --color-habit-blue: oklch(0.6 0.17 252);
+  /* ---------- Color: habit palette (light) ----------
+   * The four default habit colors are tuned with the dataviz palette validator:
+   * adjacent pairs stay apart under color-vision deficiency by separating
+   * lightness, not only hue. Habits also always carry an icon or a name, so
+   * color is never the only identity channel. */
+  --color-habit-green: oklch(0.58 0.16 150);
+  --color-habit-orange: oklch(0.74 0.16 62);
+  --color-habit-purple: oklch(0.48 0.2 302);
+  --color-habit-blue: oklch(0.68 0.14 240);
   --color-habit-red: oklch(0.62 0.2 25);
   --color-habit-pink: oklch(0.65 0.19 355);
   --color-habit-yellow: oklch(0.76 0.15 82);
@@ -62,6 +66,9 @@
   --color-habit-graphite: oklch(0.55 0.01 270);
   /* Check marks drawn on top of a habit color. */
   --color-on-habit: oklch(1 0 0);
+  /* Streak flame gradient. */
+  --color-streak-from: oklch(0.82 0.16 85);
+  --color-streak-to: oklch(0.62 0.22 30);
 
   /* Semantic habit aliases for the default habits. */
   --color-habit-sport: var(--color-habit-green);
@@ -188,6 +195,8 @@
   --animate-view-prev: view-prev var(--duration-view) var(--ease-emphasized);
   --animate-view-switch: view-switch var(--duration-view) var(--ease-emphasized);
   --animate-check: check var(--duration-standard) var(--ease-emphasized);
+  --animate-ring-fill: ring-fill 900ms var(--ease-emphasized) both;
+  --animate-bar-grow: bar-grow var(--duration-emphasized) var(--ease-emphasized) both;
   --animate-check-pop: check var(--duration-emphasized) var(--ease-pop) both;
   /* Draws the tick after the circle has popped in. */
   --animate-check-draw: check-draw var(--duration-emphasized) var(--ease-standard)
@@ -249,6 +258,16 @@
       opacity: 0;
     }
   }
+  @keyframes ring-fill {
+    from {
+      stroke-dashoffset: var(--ring-length);
+    }
+  }
+  @keyframes bar-grow {
+    from {
+      transform: scaleY(0);
+    }
+  }
   @keyframes check-draw {
     from {
       stroke-dashoffset: 1;
@@ -261,10 +280,11 @@
   /* ---------- Layering ---------- */
   --z-chrome: 20;
   --z-sheet: 30;
-  --z-dropdown: 40;
   --z-overlay: 50;
   --z-modal: 60;
-  --z-tooltip: 70;
+  /* Menus, popovers, and selects can open from inside a modal, so they sit above it. */
+  --z-dropdown: 70;
+  --z-tooltip: 80;
 }
 
 :root {
@@ -300,17 +320,16 @@
   --color-chrome: oklch(0.165 0.004 270 / 0.82);
   --color-control-thumb: oklch(0.38 0.008 270);
 
-  --color-habit-green: oklch(0.74 0.15 150);
-  --color-habit-orange: oklch(0.77 0.15 58);
-  --color-habit-purple: oklch(0.7 0.16 302);
-  --color-habit-blue: oklch(0.71 0.13 252);
+  --color-habit-green: oklch(0.5 0.13 150);
+  --color-habit-orange: oklch(0.67 0.15 60);
+  --color-habit-purple: oklch(0.55 0.17 302);
+  --color-habit-blue: oklch(0.665 0.12 236);
   --color-habit-red: oklch(0.69 0.18 25);
   --color-habit-pink: oklch(0.74 0.15 355);
   --color-habit-yellow: oklch(0.84 0.13 88);
   --color-habit-teal: oklch(0.76 0.1 195);
   --color-habit-indigo: oklch(0.67 0.15 277);
   --color-habit-graphite: oklch(0.7 0.01 270);
-  --color-on-habit: oklch(0.18 0.004 270);
 
   --shadow-subtle: 0 1px 2px 0 oklch(0 0 0 / 0.3);
   --shadow-floating: 0 0 0 0.5px oklch(1 0 0 / 0.06), 0 4px 14px -4px oklch(0 0 0 / 0.5);
