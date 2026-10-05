@@ -1,5 +1,5 @@
 import { eachDayOfInterval, endOfMonth, startOfMonth } from 'date-fns'
-import { Check, Flame } from 'lucide-react'
+import { Check } from 'lucide-react'
 import { type CSSProperties, useEffect, useRef, useState } from 'react'
 
 import { useWeekDays } from '@/hooks'
@@ -8,6 +8,8 @@ import { habitColorVar, isCompleted } from '@/lib/habits'
 import { cn } from '@/lib/utils'
 import { type StreakCelebration, useAppActions, useAppState } from '@/state'
 import type { CompletionMap, Habit, Weekday } from '@/types'
+
+import { FireAnimation } from './FireAnimation'
 
 const VISIBLE_MS = 3000
 
@@ -56,53 +58,45 @@ function StreakPopupCard({ celebration, habit }: { celebration: StreakCelebratio
 
   return (
     <div className="pointer-events-none fixed inset-x-0 top-0 z-(--z-tooltip) flex justify-center px-3 pt-[max(--spacing(2),env(safe-area-inset-top))]">
+      {/* A 4px halo of the panel color at 12% sits outside the panel. */}
       <div
         ref={cardRef}
-        role="status"
-        aria-live="polite"
         onAnimationEnd={(event) =>
           leaving && event.target === event.currentTarget && dismissCelebration()
         }
-        style={{ '--habit': color } as CSSProperties}
         className={cn(
-          'pointer-events-auto w-full max-w-sm origin-top rounded-[1.75rem] bg-island p-4 text-island-foreground shadow-modal',
+          'pointer-events-auto w-full max-w-sm origin-top rounded-[calc(1.75rem+4px)] bg-island/12 p-1',
           leaving ? 'animate-island-out' : 'animate-island-in',
         )}
       >
-        <div className="flex items-center gap-3">
-          <span className="relative inline-flex size-12 shrink-0 items-center justify-center">
-            {/* Soft glow behind the flame. */}
-            <span
-              aria-hidden="true"
-              className="absolute inset-0 rounded-pill bg-[radial-gradient(circle,var(--color-streak-to)_0%,transparent_70%)] opacity-50 blur-md"
-            />
-            <Flame
-              aria-hidden="true"
-              className="relative size-10 origin-bottom animate-flame"
-              fill="url(#streak-gradient)"
-              stroke="url(#streak-gradient)"
-              strokeWidth={1.5}
-            />
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="text-weekday tracking-widest text-island-muted uppercase">Streak</p>
-            <p className="text-heading tabular-nums">
-              {celebration.days} {celebration.days === 1 ? 'day' : 'days'}
-            </p>
+        <div
+          role="status"
+          aria-live="polite"
+          style={{ '--habit': color } as CSSProperties}
+          className="rounded-[1.75rem] bg-island p-4 text-island-foreground shadow-modal"
+        >
+          <div className="flex items-center gap-3">
+            <FireAnimation className="h-14 w-10" />
+            <div className="min-w-0 flex-1">
+              <p className="text-weekday tracking-widest text-island-muted uppercase">Streak</p>
+              <p className="text-heading tabular-nums">
+                {celebration.days} {celebration.days === 1 ? 'day' : 'days'}
+              </p>
+            </div>
+            <span className="flex items-center gap-1.5 rounded-pill bg-island-raised py-1 pr-3 pl-1.5 text-label">
+              <span aria-hidden="true" className="size-2.5 rounded-pill bg-(--habit)" />
+              {habit.name}
+            </span>
           </div>
-          <span className="flex items-center gap-1.5 rounded-pill bg-island-raised py-1 pr-3 pl-1.5 text-label">
-            <span aria-hidden="true" className="size-2.5 rounded-pill bg-(--habit)" />
-            {habit.name}
-          </span>
-        </div>
 
-        <WeekRow
-          completions={completions}
-          habit={habit}
-          date={date}
-          weekStartsOn={settings.calendar.weekStartsOn}
-        />
-        <MonthTimeline completions={completions} habit={habit} date={date} />
+          <WeekRow
+            completions={completions}
+            habit={habit}
+            date={date}
+            weekStartsOn={settings.calendar.weekStartsOn}
+          />
+          <MonthTimeline completions={completions} habit={habit} date={date} />
+        </div>
       </div>
     </div>
   )

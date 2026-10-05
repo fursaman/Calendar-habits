@@ -204,7 +204,6 @@
   --animate-check: check var(--duration-standard) var(--ease-emphasized);
   --animate-island-in: island-in 520ms var(--ease-pop) both;
   --animate-island-out: island-out var(--duration-emphasized) var(--ease-exit) both;
-  --animate-flame: flame 1.4s ease-in-out infinite;
   --animate-ring-fill: ring-fill 900ms var(--ease-emphasized) both;
   --animate-bar-grow: bar-grow var(--duration-emphasized) var(--ease-emphasized) both;
   --animate-check-pop: check var(--duration-emphasized) var(--ease-pop) both;
@@ -268,31 +267,21 @@
       opacity: 0;
     }
   }
-  /* Grows out of a small pill at the top edge, like a Dynamic Island panel. */
+  /* Drops in from the top edge, like a Dynamic Island panel. Uniform scale
+   * keeps the corner radius in proportion (border-radius is not animated). */
   @keyframes island-in {
     from {
       opacity: 0;
-      transform: translateY(-60%) scale(0.35, 0.25);
-      border-radius: 999px;
+      transform: translateY(-40%) scale(0.5);
     }
-    60% {
+    50% {
       opacity: 1;
     }
   }
   @keyframes island-out {
     to {
       opacity: 0;
-      transform: translateY(-60%) scale(0.35, 0.25);
-      border-radius: 999px;
-    }
-  }
-  @keyframes flame {
-    0%,
-    100% {
-      transform: scale(1) rotate(-2deg);
-    }
-    50% {
-      transform: scale(1.08) rotate(2deg);
+      transform: translateY(-40%) scale(0.5);
     }
   }
   @keyframes ring-fill {
