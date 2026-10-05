@@ -33,7 +33,7 @@ export function DrawerContent({
       <DialogPrimitive.Content
         className={cn(
           'fixed inset-x-0 bottom-0 z-(--z-modal) mx-auto flex max-h-[90dvh] w-full max-w-sheet flex-col',
-          'rounded-t-xl bg-surface text-foreground shadow-modal dark:bg-surface-secondary',
+          'rounded-t-xl bg-sheet text-foreground shadow-modal',
           'pb-[max(--spacing(4),env(safe-area-inset-bottom))]',
           'data-[state=closed]:animate-sheet-out data-[state=open]:animate-sheet-in',
           className,

@@ -13,7 +13,7 @@ export const floatingSurfaceClassName =
  * the bottom edge like a native sheet; from `sm` up it is a centered card.
  */
 export const modalContentClassName = cn(
-  'fixed z-(--z-modal) flex flex-col bg-surface text-foreground shadow-modal outline-none dark:bg-surface-secondary',
+  'fixed z-(--z-modal) flex flex-col bg-sheet text-foreground shadow-modal outline-none',
   'inset-x-0 bottom-0 max-h-[92dvh] rounded-t-xl pb-[env(safe-area-inset-bottom)]',
   'data-[state=open]:animate-sheet-in data-[state=closed]:animate-sheet-out',
   'sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:max-h-[85dvh] sm:w-[calc(100%-2rem)] sm:max-w-dialog sm:-translate-1/2 sm:rounded-xl sm:pb-0',
