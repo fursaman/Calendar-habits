@@ -1,4 +1,4 @@
-import { differenceInCalendarDays } from 'date-fns'
+import { differenceInCalendarDays, getISOWeek, getWeek } from 'date-fns'
 
 import type { CalendarView, Weekday } from '@/types'
 
@@ -109,4 +109,20 @@ export function formatPeriod(
         locale,
       ).format(date)
   }
+}
+
+/**
+ * Week number: ISO 8601 (weeks start Monday, week 1 holds the first Thursday)
+ * when weeks start on Monday; otherwise the US convention (week 1 holds Jan 1).
+ */
+export function getWeekNumber(date: Date, weekStartsOn: Weekday): number {
+  return weekStartsOn === 1
+    ? getISOWeek(date)
+    : getWeek(date, { weekStartsOn, firstWeekContainsDate: 1 })
+}
+
+/** "28 Sep – 4 Oct" (no year), for compact week subtitles. */
+export function formatWeekRange(date: Date, weekStartsOn: Weekday, locale?: string): string {
+  const { start, end } = getWeekRange(date, weekStartsOn)
+  return getFormatter({ month: 'short', day: 'numeric' }, locale).formatRange(start, end)
 }

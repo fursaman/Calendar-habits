@@ -52,3 +52,12 @@ describe('calendar ranges', () => {
     )
   })
 })
+
+describe('week numbers', () => {
+  it('uses ISO weeks for Monday starts and US weeks for Sunday starts', async () => {
+    const { getWeekNumber } = await import('./format')
+    expect(getWeekNumber(new Date(2026, 9, 5), 1)).toBe(41)
+    expect(getWeekNumber(new Date(2021, 0, 1), 1)).toBe(53)
+    expect(getWeekNumber(new Date(2021, 0, 1), 0)).toBe(1)
+  })
+})

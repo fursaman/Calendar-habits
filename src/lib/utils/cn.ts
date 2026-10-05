@@ -19,7 +19,7 @@ const twMerge = extendTailwindMerge({
         'weekday',
       ],
       shadow: ['subtle', 'floating', 'elevated', 'modal'],
-      radius: ['sm', 'md', 'lg', 'xl', 'pill'],
+      radius: ['sm', 'md', 'lg', 'xl', 'pill', 'control'],
       container: ['content', 'sheet', 'dialog'],
       spacing: [
         'touch',

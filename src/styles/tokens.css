@@ -158,6 +158,8 @@
   --radius-md: 0.625rem;
   --radius-lg: 0.875rem;
   --radius-xl: 1.25rem;
+  /* Toolbar buttons and the app mark. */
+  --radius-control: 0.75rem;
   --radius-pill: 9999px;
 
   /* ---------- Elevation ---------- */

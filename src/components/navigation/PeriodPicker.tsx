@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { MiniMonth } from '@/components/calendar/MiniMonth'
 import { IconButton, Popover, PopoverContent, PopoverTrigger } from '@/components/ui'
 import { useToday } from '@/hooks'
-import { formatMonthYear, formatPeriod } from '@/lib/calendar'
+import { formatMonthYear, formatPeriod, formatWeekRange, getWeekNumber } from '@/lib/calendar'
 import { cn } from '@/lib/utils'
 import { useAppActions, useAppState, useCalendarNavigation } from '@/state'
 
@@ -44,9 +44,19 @@ export function PeriodPicker({
         )}
         aria-label={`${formatPeriod(date, view, weekStartsOn)}, choose a date`}
       >
-        <span className="truncate text-nav tabular-nums">
-          {formatPeriod(date, view, weekStartsOn, undefined, compact)}
-        </span>
+        {view === 'week' ? (
+          // Week number as the title, its dates as a small subtitle.
+          <span className="flex min-w-0 flex-col leading-none">
+            <span className="truncate text-nav">Week {getWeekNumber(date, weekStartsOn)}</span>
+            <span className="truncate text-date-sm text-muted-foreground tabular-nums">
+              {formatWeekRange(date, weekStartsOn)}
+            </span>
+          </span>
+        ) : (
+          <span className="truncate text-nav tabular-nums">
+            {formatPeriod(date, view, weekStartsOn, undefined, compact)}
+          </span>
+        )}
         <ChevronDown
           aria-hidden="true"
           className={cn(

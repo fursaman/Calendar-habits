@@ -16,6 +16,8 @@ export type DateNavigatorProps = {
   isToday?: boolean
   /** Tooltips are useful on desktop toolbars, noise inside the panel. */
   tooltips?: boolean
+  todayClassName?: string
+  arrowClassName?: string
   className?: string
 }
 
@@ -29,6 +31,8 @@ export function DateNavigator({
   onToday,
   isToday = false,
   tooltips = false,
+  todayClassName,
+  arrowClassName,
   className,
 }: DateNavigatorProps) {
   return (
@@ -37,6 +41,7 @@ export function DateNavigator({
         icon={<ChevronLeft />}
         label={previousLabel}
         tooltip={tooltips}
+        className={arrowClassName}
         onClick={onPrevious}
         size="sm"
       />
@@ -45,6 +50,7 @@ export function DateNavigator({
         icon={<ChevronRight />}
         label={nextLabel}
         tooltip={tooltips}
+        className={arrowClassName}
         onClick={onNext}
         size="sm"
       />
@@ -54,7 +60,7 @@ export function DateNavigator({
           size="sm"
           onClick={onToday}
           disabled={isToday}
-          className="ml-1 rounded-pill"
+          className={cn('ml-1 rounded-pill', todayClassName)}
         >
           Today
         </Button>

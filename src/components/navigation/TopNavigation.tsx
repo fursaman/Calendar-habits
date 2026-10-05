@@ -7,6 +7,7 @@ import { FILTERED_VIEWS, useToday } from '@/hooks'
 import { fromDateKey, getPeriodKey } from '@/lib/calendar'
 import { cn } from '@/lib/utils'
 import { useAppActions, useAppState, useCalendarNavigation } from '@/state'
+import type { CalendarView } from '@/types'
 
 import { AppIcon } from './AppIcon'
 import { DateNavigator } from './DateNavigator'
@@ -17,6 +18,10 @@ import { PeriodPicker } from './PeriodPicker'
  * navigation. Phones: the period and navigation on top, the view switcher
  * below. The habit filter sits underneath on every size.
  */
+/** Contained toolbar buttons: Today, Analytics, Settings. */
+const TOOLBAR_BUTTON = 'size-9 rounded-control'
+const SCROLLING_VIEWS: readonly CalendarView[] = ['month', 'week']
+
 export function TopNavigation() {
   const { settings } = useAppState()
   const { setSettingsOpen, setAnalyticsOpen } = useAppActions()
@@ -35,6 +40,7 @@ export function TopNavigation() {
         tooltip
         variant="default"
         size="sm"
+        className={TOOLBAR_BUTTON}
         onClick={() => setAnalyticsOpen(true)}
       />
       <IconButton
@@ -43,6 +49,7 @@ export function TopNavigation() {
         tooltip
         variant="default"
         size="sm"
+        className={TOOLBAR_BUTTON}
         onClick={() => setSettingsOpen(true)}
       />
     </div>
@@ -57,6 +64,9 @@ export function TopNavigation() {
       onNext={() => go(1)}
       onToday={goToToday}
       isToday={showingToday}
+      todayClassName={cn(TOOLBAR_BUTTON, 'w-auto px-3')}
+      // Month and Week scroll vertically on phones, so their arrows make room for the title.
+      arrowClassName={SCROLLING_VIEWS.includes(view) ? 'max-sm:hidden' : undefined}
       tooltips
     />
   )
@@ -65,8 +75,8 @@ export function TopNavigation() {
     <header className="sticky top-0 z-(--z-chrome) border-b border-border-subtle bg-chrome pt-[env(safe-area-inset-top)] backdrop-blur-xl backdrop-saturate-150">
       <div className="mx-auto max-w-content">
         {/* Desktop and tablet */}
-        <div className="hidden h-14 grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 lg:grid lg:px-6">
-          <div className="flex items-center gap-2">
+        <div className="hidden h-17 grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 lg:grid lg:px-6">
+          <div className="flex items-center gap-2.5">
             <AppIcon />
             <span className="text-nav">Habits</span>
           </div>
@@ -79,10 +89,10 @@ export function TopNavigation() {
         </div>
 
         {/* Phones */}
-        <div className="space-y-2 px-3 pt-1.5 pb-2 lg:hidden">
-          <div className="flex h-11 items-center justify-between gap-1">
+        <div className="space-y-2 px-3 pt-2 pb-2 lg:hidden">
+          <div className="flex h-13 items-center justify-between gap-1">
             <div className="flex min-w-0 items-center gap-1.5">
-              <AppIcon className="size-6" />
+              <AppIcon className="size-8 [&_svg]:size-4.5" />
               <PeriodPicker compact className="-ml-1" />
             </div>
             <div className="flex items-center">
