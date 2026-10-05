@@ -70,3 +70,11 @@ export function getWeekdayReferenceDates(weekStartsOn: Weekday): Date[] {
   const start = startOfWeek(new Date(), { weekStartsOn })
   return Array.from({ length: DAYS_PER_WEEK }, (_, i) => addDays(start, i))
 }
+
+const GRID_WEEKS = 6
+
+/** Month grid always padded to six weeks, so mini months line up in the year view. */
+export function getFixedMonthGridDays(date: Date, weekStartsOn: Weekday): Date[] {
+  const start = startOfWeek(startOfMonth(date), { weekStartsOn })
+  return Array.from({ length: GRID_WEEKS * DAYS_PER_WEEK }, (_, i) => addDays(start, i))
+}

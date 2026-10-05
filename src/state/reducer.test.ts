@@ -17,6 +17,23 @@ describe('appReducer', () => {
     expect(initial.view).toBe('month')
   })
 
+  it('selecting a date reveals the habit panel', () => {
+    const state = appReducer(initial, {
+      type: 'calendar/selectDate',
+      date: '2026-10-07' as DateKey,
+    })
+    expect(state.activeDate).toBe('2026-10-07')
+    expect(state.panel).toBe('half')
+    const full = appReducer(
+      { ...state, panel: 'full' },
+      {
+        type: 'calendar/selectDate',
+        date: '2026-10-08' as DateKey,
+      },
+    )
+    expect(full.panel).toBe('full')
+  })
+
   it('removing a habit clears its completions and filter', () => {
     const date = '2026-10-05' as DateKey
     let state = appReducer(initial, { type: 'completions/toggle', date, habitId: 'sport' })

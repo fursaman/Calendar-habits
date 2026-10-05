@@ -1,3 +1,9 @@
+import { differenceInCalendarDays } from 'date-fns'
+
+import type { CalendarView, Weekday } from '@/types'
+
+import { getWeekRange } from './ranges'
+
 /**
  * Locale-aware display formatting. Uses Intl so labels follow the user's
  * language without bundling date-fns locales.
@@ -20,15 +26,20 @@ export function formatMonthYear(date: Date, locale?: string): string {
   return getFormatter({ month: 'long', year: 'numeric' }, locale).format(date)
 }
 
-/** "Oct" */
-export function formatMonthShort(date: Date, locale?: string): string {
-  return getFormatter({ month: 'short' }, locale).format(date)
+/** "October" */
+export function formatMonth(date: Date, locale?: string): string {
+  return getFormatter({ month: 'long' }, locale).format(date)
+}
+
+/** "2026" */
+export function formatYear(date: Date, locale?: string): string {
+  return getFormatter({ year: 'numeric' }, locale).format(date)
 }
 
 /** "Mon" or "M" */
 export function formatWeekday(
   date: Date,
-  width: 'short' | 'narrow' = 'short',
+  width: 'long' | 'short' | 'narrow' = 'short',
   locale?: string,
 ): string {
   return getFormatter({ weekday: width }, locale).format(date)
@@ -39,7 +50,54 @@ export function formatFullDate(date: Date, locale?: string): string {
   return getFormatter({ dateStyle: 'full' }, locale).format(date)
 }
 
+/** "Mon, Oct 5" */
+export function formatShortDate(date: Date, locale?: string): string {
+  return getFormatter({ weekday: 'short', month: 'short', day: 'numeric' }, locale).format(date)
+}
+
+/** "October 5" */
+export function formatMonthDay(date: Date, locale?: string): string {
+  return getFormatter({ month: 'long', day: 'numeric' }, locale).format(date)
+}
+
 /** "5" */
 export function formatDayOfMonth(date: Date, locale?: string): string {
   return getFormatter({ day: 'numeric' }, locale).format(date)
+}
+
+/** "Today", "Yesterday", "Tomorrow", or `fallback(date)`. */
+export function formatRelativeDay(
+  date: Date,
+  today: Date,
+  fallback: (date: Date) => string = formatShortDate,
+): string {
+  const diff = differenceInCalendarDays(date, today)
+  if (diff === 0) return 'Today'
+  if (diff === -1) return 'Yesterday'
+  if (diff === 1) return 'Tomorrow'
+  return fallback(date)
+}
+
+/** Title for the current period of a view, e.g. "Sep 28 – Oct 4, 2026" for a week. */
+export function formatPeriod(
+  date: Date,
+  view: CalendarView,
+  weekStartsOn: Weekday,
+  locale?: string,
+): string {
+  switch (view) {
+    case 'year':
+      return formatYear(date, locale)
+    case 'month':
+      return formatMonthYear(date, locale)
+    case 'week': {
+      const { start, end } = getWeekRange(date, weekStartsOn)
+      return getFormatter({ month: 'short', day: 'numeric', year: 'numeric' }, locale).formatRange(
+        start,
+        end,
+      )
+    }
+    case 'day':
+      return getFormatter({ month: 'long', day: 'numeric', year: 'numeric' }, locale).format(date)
+  }
 }

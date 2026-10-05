@@ -1,25 +1,29 @@
-import type { Habit, HabitColor, HabitFilter } from '@/types'
+import type { Habit, HabitColor, HabitFilter, HabitIcon } from '@/types'
 
-export function createHabit(input: { name: string; color: HabitColor; icon?: string }): Habit {
+import { MAX_HABIT_NAME_LENGTH } from './defaults'
+
+export type HabitInput = { name: string; color: HabitColor; icon?: HabitIcon }
+
+export function normalizeHabitName(name: string): string {
+  return name.trim().replace(/\s+/g, ' ').slice(0, MAX_HABIT_NAME_LENGTH)
+}
+
+export function createHabit(input: HabitInput): Habit {
   return {
     id: crypto.randomUUID(),
-    name: input.name.trim(),
+    name: normalizeHabitName(input.name),
     color: input.color,
     ...(input.icon ? { icon: input.icon } : {}),
     createdAt: new Date().toISOString(),
   }
 }
 
-export function getActiveHabits(habits: readonly Habit[]): Habit[] {
-  return habits.filter((habit) => !habit.archivedAt)
+export function filterHabits(habits: readonly Habit[], filter: HabitFilter): readonly Habit[] {
+  if (filter === 'all') return habits
+  return habits.filter((habit) => habit.id === filter)
 }
 
-export function filterHabits(habits: readonly Habit[], filter: HabitFilter): Habit[] {
-  const active = getActiveHabits(habits)
-  return filter === 'all' ? active : active.filter((habit) => habit.id === filter)
-}
-
-/** CSS custom property for a habit color, for inline styles such as SVG fills. */
+/** CSS custom property for a habit color token. */
 export function habitColorVar(color: HabitColor): string {
   return `var(--color-habit-${color})`
 }

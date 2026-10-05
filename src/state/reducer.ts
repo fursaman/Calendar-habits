@@ -10,16 +10,24 @@ export function createInitialState(data: AppData, now: Date = new Date()): AppSt
     activeDate: todayKey(now),
     view: data.settings.calendar.defaultView,
     habitFilter: 'all',
-    sheet: { type: 'closed' },
+    panel: 'collapsed',
+    settingsOpen: false,
   }
 }
 
 export function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
     case 'calendar/setActiveDate':
-      return { ...state, activeDate: action.date }
+      return state.activeDate === action.date ? state : { ...state, activeDate: action.date }
+    case 'calendar/selectDate':
+      // Selecting a day always reveals its habits.
+      return {
+        ...state,
+        activeDate: action.date,
+        panel: state.panel === 'collapsed' ? 'half' : state.panel,
+      }
     case 'calendar/setView':
-      return { ...state, view: action.view }
+      return { ...state, view: action.view, activeDate: action.date ?? state.activeDate }
     case 'calendar/setHabitFilter':
       return { ...state, habitFilter: action.filter }
 
@@ -58,9 +66,9 @@ export function appReducer(state: AppState, action: AppAction): AppState {
     case 'settings/update':
       return { ...state, settings: { ...state.settings, ...action.changes } }
 
-    case 'sheet/open':
-      return { ...state, sheet: action.sheet }
-    case 'sheet/close':
-      return { ...state, sheet: { type: 'closed' } }
+    case 'panel/setSnap':
+      return state.panel === action.snap ? state : { ...state, panel: action.snap }
+    case 'settings/setOpen':
+      return { ...state, settingsOpen: action.open }
   }
 }

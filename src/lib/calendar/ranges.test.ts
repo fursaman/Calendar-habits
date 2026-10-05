@@ -1,8 +1,14 @@
 import { describe, expect, it } from 'vitest'
 
 import { toDateKey } from './date-key'
-import { shiftDate } from './navigation'
-import { chunkIntoWeeks, getMonthGridDays, getWeekdayOrder, getWeekDays } from './ranges'
+import { getPeriodKey, shiftDate } from './navigation'
+import {
+  chunkIntoWeeks,
+  getFixedMonthGridDays,
+  getMonthGridDays,
+  getWeekdayOrder,
+  getWeekDays,
+} from './ranges'
 
 describe('calendar ranges', () => {
   it('builds a Monday-first month grid of full weeks', () => {
@@ -30,5 +36,19 @@ describe('calendar ranges', () => {
     expect(toDateKey(shiftDate(new Date(2026, 0, 31), 'month', 1))).toBe('2026-02-28')
     expect(toDateKey(shiftDate(new Date(2026, 9, 5), 'week', -1))).toBe('2026-09-28')
     expect(toDateKey(shiftDate(new Date(2028, 1, 29), 'year', 1))).toBe('2029-02-28')
+    expect(toDateKey(shiftDate(new Date(2026, 11, 31), 'day', 1))).toBe('2027-01-01')
+  })
+
+  it('pads mini months to six weeks', () => {
+    expect(getFixedMonthGridDays(new Date(2026, 1, 1), 1)).toHaveLength(42)
+  })
+
+  it('keys periods so same-period selection does not animate', () => {
+    expect(getPeriodKey(new Date(2026, 9, 5), 'month', 1)).toBe(
+      getPeriodKey(new Date(2026, 9, 31), 'month', 1),
+    )
+    expect(getPeriodKey(new Date(2026, 9, 4), 'week', 1)).not.toBe(
+      getPeriodKey(new Date(2026, 9, 5), 'week', 1),
+    )
   })
 })

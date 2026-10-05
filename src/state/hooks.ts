@@ -1,7 +1,8 @@
 import { use, useMemo } from 'react'
 
 import { fromDateKey, type NavigationDirection, shiftDate, toDateKey } from '@/lib/calendar'
-import { createHabit } from '@/lib/habits'
+import { createHabit, type HabitInput } from '@/lib/habits'
+import type { CalendarView, DateKey } from '@/types'
 
 import { AppDispatchContext, AppStateContext } from './context'
 import type { AppAction, AppState } from './types'
@@ -25,15 +26,15 @@ export function useAppActions() {
   const dispatch = useAppDispatch()
   return useMemo(
     () => ({
-      setActiveDate: (date: Payload<'calendar/setActiveDate'>['date']) =>
-        dispatch({ type: 'calendar/setActiveDate', date }),
-      setView: (view: Payload<'calendar/setView'>['view']) =>
-        dispatch({ type: 'calendar/setView', view }),
+      setActiveDate: (date: DateKey) => dispatch({ type: 'calendar/setActiveDate', date }),
+      /** Sets the active date and reveals the habit panel. */
+      selectDate: (date: DateKey) => dispatch({ type: 'calendar/selectDate', date }),
+      setView: (view: CalendarView, date?: DateKey) =>
+        dispatch({ type: 'calendar/setView', view, ...(date ? { date } : {}) }),
       setHabitFilter: (filter: Payload<'calendar/setHabitFilter'>['filter']) =>
         dispatch({ type: 'calendar/setHabitFilter', filter }),
 
-      addHabit: (input: Parameters<typeof createHabit>[0]) =>
-        dispatch({ type: 'habits/add', habit: createHabit(input) }),
+      addHabit: (input: HabitInput) => dispatch({ type: 'habits/add', habit: createHabit(input) }),
       updateHabit: (payload: Payload<'habits/update'>) =>
         dispatch({ type: 'habits/update', ...payload }),
       removeHabit: (habitId: Payload<'habits/remove'>['habitId']) =>
@@ -47,8 +48,9 @@ export function useAppActions() {
       updateSettings: (changes: Payload<'settings/update'>['changes']) =>
         dispatch({ type: 'settings/update', changes }),
 
-      openSheet: (sheet: Payload<'sheet/open'>['sheet']) => dispatch({ type: 'sheet/open', sheet }),
-      closeSheet: () => dispatch({ type: 'sheet/close' }),
+      setPanel: (snap: Payload<'panel/setSnap'>['snap']) =>
+        dispatch({ type: 'panel/setSnap', snap }),
+      setSettingsOpen: (open: boolean) => dispatch({ type: 'settings/setOpen', open }),
     }),
     [dispatch],
   )
@@ -67,7 +69,6 @@ export function useCalendarNavigation() {
       go: (direction: NavigationDirection) =>
         setActiveDate(toDateKey(shiftDate(date, view, direction))),
       goToToday: () => setActiveDate(toDateKey(new Date())),
-      goToDate: (target: Date) => setActiveDate(toDateKey(target)),
     }),
     [date, view, setActiveDate],
   )

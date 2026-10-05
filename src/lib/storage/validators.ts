@@ -4,11 +4,12 @@ import type {
   CompletionMap,
   Habit,
   HabitColor,
+  HabitIcon,
   ThemePreference,
   UserSettings,
   Weekday,
 } from '@/types'
-import { CALENDAR_VIEWS, HABIT_COLORS, THEME_PREFERENCES } from '@/types'
+import { CALENDAR_VIEWS, HABIT_COLORS, HABIT_ICONS, THEME_PREFERENCES } from '@/types'
 
 /*
  * Runtime validation for data read from storage or a future API.
@@ -29,38 +30,53 @@ function isWeekday(value: unknown): value is Weekday {
   return Number.isInteger(value) && (value as number) >= 0 && (value as number) <= 6
 }
 
-function isOptionalString(value: unknown): value is string | undefined {
-  return value === undefined || typeof value === 'string'
-}
-
 export function parseHabit(value: unknown): Habit | null {
   if (!isRecord(value)) return null
-  const { id, name, color, icon, createdAt, archivedAt } = value
+  const { id, name, color, icon, createdAt } = value
   if (typeof id !== 'string' || id === '') return null
-  if (typeof name !== 'string') return null
+  if (typeof name !== 'string' || name.trim() === '') return null
   if (!isOneOf<HabitColor>(HABIT_COLORS, color)) return null
   if (typeof createdAt !== 'string') return null
-  if (!isOptionalString(icon) || !isOptionalString(archivedAt)) return null
 
   return {
     id,
     name,
     color,
     createdAt,
-    ...(icon !== undefined ? { icon } : {}),
-    ...(archivedAt !== undefined ? { archivedAt } : {}),
+    // An unknown icon (e.g. removed from the set) falls back to the color dot.
+    ...(isOneOf<HabitIcon>(HABIT_ICONS, icon) ? { icon } : {}),
   }
 }
 
+/** Drops invalid or duplicate habits rather than losing the whole list. */
 export function parseHabits(value: unknown): Habit[] | null {
   if (!Array.isArray(value)) return null
+  const seen = new Set<string>()
   const habits: Habit[] = []
   for (const item of value) {
     const habit = parseHabit(item)
-    if (!habit) return null
+    if (!habit || seen.has(habit.id)) continue
+    seen.add(habit.id)
     habits.push(habit)
   }
   return habits
+}
+
+/** v1 stored habit colors by habit name; v2 uses palette names. */
+const V1_COLOR_MAP: Record<string, HabitColor> = {
+  sport: 'green',
+  'healthy-eating': 'orange',
+  'no-doomscrolling': 'purple',
+  reading: 'blue',
+}
+
+export function migrateHabits(data: unknown, fromVersion: number): unknown {
+  if (fromVersion !== 1 || !Array.isArray(data)) return null
+  return data.map((item) =>
+    isRecord(item) && typeof item.color === 'string' && item.color in V1_COLOR_MAP
+      ? { ...item, color: V1_COLOR_MAP[item.color] }
+      : item,
+  )
 }
 
 /** Drops malformed entries instead of rejecting the whole map, to keep history. */

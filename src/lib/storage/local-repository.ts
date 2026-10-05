@@ -4,7 +4,7 @@ import { DEFAULT_SETTINGS } from '@/lib/settings'
 import { getBrowserStorage, type KeyValueStorage } from './key-value-storage'
 import { createPersistedValue, type PersistenceError } from './persisted-value'
 import type { AppRepository } from './repository'
-import { parseCompletionMap, parseHabits, parseSettings } from './validators'
+import { migrateHabits, parseCompletionMap, parseHabits, parseSettings } from './validators'
 
 const NAMESPACE = 'habit-calendar'
 
@@ -15,7 +15,8 @@ export const STORAGE_KEYS = {
   settings: `${NAMESPACE}:settings`,
 } as const
 
-const SCHEMA_VERSION = 1
+/** Bump a version and add a migration when a stored shape changes. */
+const VERSIONS = { habits: 2, completions: 1, settings: 1 } as const
 
 function reportError(error: PersistenceError) {
   console.warn(`[storage] ${error.message} (${error.key})`, error.cause)
@@ -27,8 +28,9 @@ export function createLocalRepository(
   const habits = createPersistedValue({
     storage,
     key: STORAGE_KEYS.habits,
-    version: SCHEMA_VERSION,
+    version: VERSIONS.habits,
     parse: parseHabits,
+    migrate: migrateHabits,
     fallback: () => [...DEFAULT_HABITS],
     onError: reportError,
   })
@@ -36,7 +38,7 @@ export function createLocalRepository(
   const completions = createPersistedValue({
     storage,
     key: STORAGE_KEYS.completions,
-    version: SCHEMA_VERSION,
+    version: VERSIONS.completions,
     parse: parseCompletionMap,
     fallback: () => ({}),
     onError: reportError,
@@ -45,7 +47,7 @@ export function createLocalRepository(
   const settings = createPersistedValue({
     storage,
     key: STORAGE_KEYS.settings,
-    version: SCHEMA_VERSION,
+    version: VERSIONS.settings,
     parse: (data) => parseSettings(data, DEFAULT_SETTINGS),
     fallback: () => DEFAULT_SETTINGS,
     onError: reportError,

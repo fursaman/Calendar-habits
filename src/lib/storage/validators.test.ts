@@ -2,12 +2,23 @@ import { describe, expect, it } from 'vitest'
 
 import { DEFAULT_SETTINGS } from '@/lib/settings'
 
-import { parseCompletionMap, parseHabits, parseSettings } from './validators'
+import { migrateHabits, parseCompletionMap, parseHabits, parseSettings } from './validators'
 
 describe('validators', () => {
-  it('rejects habits with unknown colors', () => {
-    expect(parseHabits([{ id: 'a', name: 'A', color: 'pink', createdAt: 'x' }])).toBeNull()
-    expect(parseHabits([{ id: 'a', name: 'A', color: 'reading', createdAt: 'x' }])).toHaveLength(1)
+  it('drops invalid and duplicate habits but keeps the rest', () => {
+    expect(
+      parseHabits([
+        { id: 'a', name: 'A', color: 'neon', createdAt: 'x' },
+        { id: 'b', name: 'B', color: 'blue', icon: 'gone', createdAt: 'x' },
+        { id: 'b', name: 'B2', color: 'blue', createdAt: 'x' },
+      ]),
+    ).toEqual([{ id: 'b', name: 'B', color: 'blue', createdAt: 'x' }])
+    expect(parseHabits('nope')).toBeNull()
+  })
+
+  it('migrates v1 habit colors to palette names', () => {
+    const migrated = migrateHabits([{ id: 's', name: 'S', color: 'sport', createdAt: 'x' }], 1)
+    expect(parseHabits(migrated)?.[0]?.color).toBe('green')
   })
 
   it('keeps valid completions and drops malformed ones', () => {
