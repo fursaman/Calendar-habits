@@ -17,61 +17,117 @@
   --radius-*: initial;
   --shadow-*: initial;
   --animate-*: initial;
+  --ease-*: initial;
 
   --color-transparent: transparent;
   --color-current: currentColor;
 
   /* ---------- Color: semantic (light) ---------- */
-  --color-background: oklch(0.99 0.002 260);
-  --color-foreground: oklch(0.2 0.015 260);
+  --color-background: oklch(0.992 0.001 270);
+  --color-foreground: oklch(0.22 0.006 270);
   --color-surface: oklch(1 0 0);
-  --color-surface-secondary: oklch(0.97 0.004 260);
-  --color-surface-tertiary: oklch(0.94 0.006 260);
-  --color-border: oklch(0.88 0.008 260);
-  --color-border-subtle: oklch(0.93 0.005 260);
-  --color-muted: oklch(0.95 0.005 260);
-  --color-muted-foreground: oklch(0.48 0.015 260);
-  --color-primary: oklch(0.5 0.2 268);
+  --color-surface-secondary: oklch(0.973 0.002 270);
+  --color-surface-tertiary: oklch(0.948 0.003 270);
+  --color-border: oklch(0.9 0.004 270);
+  --color-border-subtle: oklch(0.94 0.003 270);
+  --color-muted: oklch(0.955 0.003 270);
+  --color-muted-foreground: oklch(0.53 0.01 270);
+  --color-faint-foreground: oklch(0.72 0.006 270);
+  /* Primary is graphite, so habit colors carry all the color in the UI. */
+  --color-primary: oklch(0.24 0.006 270);
   --color-primary-foreground: oklch(0.99 0 0);
-  --color-destructive: oklch(0.55 0.21 27);
+  /* Today marker, in the spirit of a native calendar. */
+  --color-today: oklch(0.6 0.21 27);
+  --color-today-foreground: oklch(0.99 0 0);
+  --color-destructive: oklch(0.57 0.21 27);
   --color-destructive-foreground: oklch(0.99 0 0);
-  --color-success: oklch(0.55 0.15 150);
-  --color-warning: oklch(0.7 0.16 70);
-  --color-ring: oklch(0.55 0.2 268);
-  --color-overlay: oklch(0.15 0.01 260 / 0.45);
+  --color-success: oklch(0.6 0.15 150);
+  --color-warning: oklch(0.72 0.16 70);
+  --color-ring: oklch(0.6 0.15 255);
+  --color-overlay: oklch(0.2 0.01 270 / 0.32);
+  --color-chrome: oklch(0.992 0.001 270 / 0.82);
+  /* Sliding thumb of segmented controls. */
+  --color-control-thumb: oklch(1 0 0);
 
-  /* ---------- Color: habits (light) ---------- */
-  --color-habit-sport: oklch(0.64 0.19 40);
-  --color-habit-healthy-eating: oklch(0.62 0.16 145);
-  --color-habit-no-doomscrolling: oklch(0.56 0.2 295);
-  --color-habit-reading: oklch(0.58 0.15 240);
+  /* ---------- Color: habit palette (light) ---------- */
+  --color-habit-green: oklch(0.66 0.16 150);
+  --color-habit-orange: oklch(0.71 0.17 55);
+  --color-habit-purple: oklch(0.58 0.2 302);
+  --color-habit-blue: oklch(0.6 0.17 252);
+  --color-habit-red: oklch(0.62 0.2 25);
+  --color-habit-pink: oklch(0.65 0.19 355);
+  --color-habit-yellow: oklch(0.76 0.15 82);
+  --color-habit-teal: oklch(0.66 0.11 195);
+  --color-habit-indigo: oklch(0.54 0.18 277);
+  --color-habit-graphite: oklch(0.55 0.01 270);
+  /* Check marks drawn on top of a habit color. */
+  --color-on-habit: oklch(1 0 0);
+
+  /* Semantic habit aliases for the default habits. */
+  --color-habit-sport: var(--color-habit-green);
+  --color-habit-healthy-eating: var(--color-habit-orange);
+  --color-habit-no-doomscrolling: var(--color-habit-purple);
+  --color-habit-reading: var(--color-habit-blue);
 
   /* ---------- Typography ---------- */
   --font-sans:
-    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji';
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
   --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-
-  --text-xs: 0.75rem; /* 12px */
-  --text-sm: 0.875rem; /* 14px */
-  --text-base: 1rem; /* 16px */
-  --text-lg: 1.125rem; /* 18px */
-  --text-xl: 1.25rem; /* 20px */
-  --text-2xl: 1.5rem; /* 24px */
-  --text-3xl: 1.875rem; /* 30px */
-
-  --text-xs--line-height: 1.35;
-  --text-sm--line-height: 1.5;
-  --text-base--line-height: 1.5;
-  --text-lg--line-height: 1.35;
-  --text-xl--line-height: 1.35;
-  --text-2xl--line-height: 1.2;
-  --text-3xl--line-height: 1.2;
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
+
+  /* Roles. Each sets size, line height, tracking, and weight. */
+  --text-display: 1.875rem;
+  --text-display--line-height: 1.1;
+  --text-display--letter-spacing: -0.022em;
+  --text-display--font-weight: 700;
+
+  --text-heading: 1.375rem;
+  --text-heading--line-height: 1.2;
+  --text-heading--letter-spacing: -0.018em;
+  --text-heading--font-weight: 700;
+
+  --text-title: 1.0625rem;
+  --text-title--line-height: 1.3;
+  --text-title--letter-spacing: -0.01em;
+  --text-title--font-weight: 600;
+
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.45;
+  --text-body--letter-spacing: -0.005em;
+
+  /* Form controls: 16px prevents iOS Safari from zooming on focus. */
+  --text-input: 1rem;
+  --text-input--line-height: 1.4;
+
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.3;
+  --text-label--font-weight: 500;
+
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.3;
+
+  --text-nav: 0.9375rem;
+  --text-nav--line-height: 1.2;
+  --text-nav--letter-spacing: -0.01em;
+  --text-nav--font-weight: 600;
+
+  --text-date: 0.9375rem;
+  --text-date--line-height: 1;
+  --text-date--font-weight: 500;
+
+  --text-date-sm: 0.625rem;
+  --text-date-sm--line-height: 1;
+  --text-date-sm--font-weight: 500;
+
+  --text-weekday: 0.6875rem;
+  --text-weekday--line-height: 1;
+  --text-weekday--letter-spacing: 0.04em;
+  --text-weekday--font-weight: 600;
 
   /* ---------- Spacing (4px grid) ---------- */
   --spacing: 0.25rem;
@@ -81,41 +137,55 @@
   --spacing-control-sm: 2rem;
   --spacing-control-md: 2.5rem;
   --spacing-control-lg: 3rem;
-  --container-content: 40rem;
+  --spacing-day-marker: 2rem; /* circle behind a calendar date number */
+  --spacing-cell-min: 3.5rem; /* minimum month-grid row height */
+  --spacing-dot: 0.375rem; /* habit completion dot */
+  --spacing-dot-sm: 0.3125rem;
+  --spacing-sheet-peek: 4.5rem; /* collapsed habit panel, excluding safe area */
+  --container-content: 72rem;
+  --container-sheet: 34rem;
+  --container-dialog: 30rem;
 
   /* ---------- Radius ---------- */
-  --radius-xs: 0.25rem;
   --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-  --radius-full: 9999px;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-pill: 9999px;
 
   /* ---------- Elevation ---------- */
-  --shadow-xs: 0 1px 2px 0 oklch(0.2 0.02 260 / 0.06);
-  --shadow-sm: 0 1px 3px 0 oklch(0.2 0.02 260 / 0.1), 0 1px 2px -1px oklch(0.2 0.02 260 / 0.1);
-  --shadow-md:
-    0 4px 12px -2px oklch(0.2 0.02 260 / 0.12), 0 2px 4px -2px oklch(0.2 0.02 260 / 0.08);
-  --shadow-lg:
-    0 16px 32px -8px oklch(0.2 0.02 260 / 0.18), 0 4px 8px -4px oklch(0.2 0.02 260 / 0.1);
+  --shadow-subtle: 0 1px 2px 0 oklch(0.2 0.02 270 / 0.06);
+  --shadow-floating:
+    0 1px 1px 0 oklch(0.2 0.02 270 / 0.04), 0 4px 14px -4px oklch(0.2 0.02 270 / 0.12);
+  --shadow-elevated:
+    0 0 0 0.5px oklch(0.2 0.02 270 / 0.06), 0 8px 28px -6px oklch(0.2 0.02 270 / 0.16);
+  --shadow-modal:
+    0 0 0 0.5px oklch(0.2 0.02 270 / 0.08), 0 24px 56px -12px oklch(0.2 0.02 270 / 0.28);
 
   /* ---------- Motion ---------- */
-  --duration-instant: 0ms;
   --duration-fast: 120ms;
-  --duration-normal: 200ms;
-  --duration-slow: 320ms;
+  --duration-standard: 200ms;
+  --duration-emphasized: 320ms;
+  --duration-view: 260ms;
+  --duration-sheet: 420ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
-  --ease-emphasized: cubic-bezier(0.3, 0, 0, 1.15);
-  --ease-exit: cubic-bezier(0.3, 0, 1, 1);
-  --default-transition-duration: var(--duration-normal);
+  --ease-emphasized: cubic-bezier(0.3, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.3, 0, 0.8, 0.15);
+  /* Close to the iOS sheet spring, without overshoot. */
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --default-transition-duration: var(--duration-standard);
   --default-transition-timing-function: var(--ease-standard);
 
-  --animate-fade-in: fade-in var(--duration-normal) var(--ease-standard);
-  --animate-fade-out: fade-out var(--duration-fast) var(--ease-exit);
-  --animate-pop-in: pop-in var(--duration-fast) var(--ease-standard);
-  --animate-sheet-in: sheet-in var(--duration-slow) var(--ease-standard);
-  --animate-sheet-out: sheet-out var(--duration-normal) var(--ease-exit);
+  --animate-fade-in: fade-in var(--duration-standard) var(--ease-standard);
+  --animate-fade-out: fade-out var(--duration-fast) var(--ease-exit) forwards;
+  --animate-pop-in: pop-in var(--duration-standard) var(--ease-emphasized);
+  --animate-pop-out: pop-out var(--duration-fast) var(--ease-exit) forwards;
+  --animate-sheet-in: sheet-in var(--duration-sheet) var(--ease-sheet);
+  --animate-sheet-out: sheet-out var(--duration-emphasized) var(--ease-exit) forwards;
+  --animate-view-next: view-next var(--duration-view) var(--ease-emphasized);
+  --animate-view-prev: view-prev var(--duration-view) var(--ease-emphasized);
+  --animate-view-switch: view-switch var(--duration-view) var(--ease-emphasized);
+  --animate-check: check var(--duration-standard) var(--ease-emphasized);
 
   @keyframes fade-in {
     from {
@@ -130,7 +200,13 @@
   @keyframes pop-in {
     from {
       opacity: 0;
-      transform: scale(0.96);
+      transform: scale(0.97);
+    }
+  }
+  @keyframes pop-out {
+    to {
+      opacity: 0;
+      transform: scale(0.97);
     }
   }
   @keyframes sheet-in {
@@ -143,8 +219,34 @@
       transform: translateY(100%);
     }
   }
+  @keyframes view-next {
+    from {
+      opacity: 0;
+      transform: translateX(1.5rem);
+    }
+  }
+  @keyframes view-prev {
+    from {
+      opacity: 0;
+      transform: translateX(-1.5rem);
+    }
+  }
+  @keyframes view-switch {
+    from {
+      opacity: 0;
+      transform: scale(0.985);
+    }
+  }
+  @keyframes check {
+    from {
+      transform: scale(0.6);
+      opacity: 0;
+    }
+  }
 
   /* ---------- Layering ---------- */
+  --z-chrome: 20;
+  --z-sheet: 30;
   --z-dropdown: 40;
   --z-overlay: 50;
   --z-modal: 60;
@@ -155,34 +257,51 @@
   color-scheme: light;
 }
 
+/*
+ * Dark theme: designed separately, not inverted. Surfaces get lighter as they
+ * rise, borders are low-contrast, and habit colors are lifted in lightness
+ * and slightly desaturated so they glow without vibrating on dark grounds.
+ */
 :root[data-theme='dark'] {
-  --color-background: oklch(0.16 0.008 260);
-  --color-foreground: oklch(0.96 0.004 260);
-  --color-surface: oklch(0.2 0.01 260);
-  --color-surface-secondary: oklch(0.24 0.012 260);
-  --color-surface-tertiary: oklch(0.28 0.014 260);
-  --color-border: oklch(0.34 0.014 260);
-  --color-border-subtle: oklch(0.27 0.012 260);
-  --color-muted: oklch(0.26 0.012 260);
-  --color-muted-foreground: oklch(0.72 0.012 260);
-  --color-primary: oklch(0.7 0.15 268);
-  --color-primary-foreground: oklch(0.16 0.02 268);
-  --color-destructive: oklch(0.66 0.19 25);
-  --color-destructive-foreground: oklch(0.16 0.02 25);
-  --color-success: oklch(0.7 0.15 150);
+  --color-background: oklch(0.165 0.004 270);
+  --color-foreground: oklch(0.955 0.002 270);
+  --color-surface: oklch(0.205 0.005 270);
+  --color-surface-secondary: oklch(0.235 0.006 270);
+  --color-surface-tertiary: oklch(0.275 0.007 270);
+  --color-border: oklch(0.33 0.007 270);
+  --color-border-subtle: oklch(0.255 0.006 270);
+  --color-muted: oklch(0.25 0.006 270);
+  --color-muted-foreground: oklch(0.71 0.008 270);
+  --color-faint-foreground: oklch(0.5 0.008 270);
+  --color-primary: oklch(0.955 0.002 270);
+  --color-primary-foreground: oklch(0.18 0.004 270);
+  --color-today: oklch(0.67 0.19 27);
+  --color-today-foreground: oklch(0.99 0 0);
+  --color-destructive: oklch(0.67 0.19 25);
+  --color-destructive-foreground: oklch(0.99 0 0);
+  --color-success: oklch(0.74 0.15 150);
   --color-warning: oklch(0.8 0.14 75);
-  --color-ring: oklch(0.72 0.15 268);
-  --color-overlay: oklch(0 0 0 / 0.6);
+  --color-ring: oklch(0.72 0.13 255);
+  --color-overlay: oklch(0 0 0 / 0.55);
+  --color-chrome: oklch(0.165 0.004 270 / 0.82);
+  --color-control-thumb: oklch(0.38 0.008 270);
 
-  --color-habit-sport: oklch(0.72 0.17 42);
-  --color-habit-healthy-eating: oklch(0.74 0.15 145);
-  --color-habit-no-doomscrolling: oklch(0.7 0.17 295);
-  --color-habit-reading: oklch(0.72 0.13 240);
+  --color-habit-green: oklch(0.74 0.15 150);
+  --color-habit-orange: oklch(0.77 0.15 58);
+  --color-habit-purple: oklch(0.7 0.16 302);
+  --color-habit-blue: oklch(0.71 0.13 252);
+  --color-habit-red: oklch(0.69 0.18 25);
+  --color-habit-pink: oklch(0.74 0.15 355);
+  --color-habit-yellow: oklch(0.84 0.13 88);
+  --color-habit-teal: oklch(0.76 0.1 195);
+  --color-habit-indigo: oklch(0.67 0.15 277);
+  --color-habit-graphite: oklch(0.7 0.01 270);
+  --color-on-habit: oklch(0.18 0.004 270);
 
-  --shadow-xs: 0 1px 2px 0 oklch(0 0 0 / 0.3);
-  --shadow-sm: 0 1px 3px 0 oklch(0 0 0 / 0.4), 0 1px 2px -1px oklch(0 0 0 / 0.4);
-  --shadow-md: 0 4px 12px -2px oklch(0 0 0 / 0.5), 0 2px 4px -2px oklch(0 0 0 / 0.4);
-  --shadow-lg: 0 16px 32px -8px oklch(0 0 0 / 0.6), 0 4px 8px -4px oklch(0 0 0 / 0.4);
+  --shadow-subtle: 0 1px 2px 0 oklch(0 0 0 / 0.3);
+  --shadow-floating: 0 0 0 0.5px oklch(1 0 0 / 0.06), 0 4px 14px -4px oklch(0 0 0 / 0.5);
+  --shadow-elevated: 0 0 0 0.5px oklch(1 0 0 / 0.08), 0 8px 28px -6px oklch(0 0 0 / 0.6);
+  --shadow-modal: 0 0 0 0.5px oklch(1 0 0 / 0.1), 0 24px 56px -12px oklch(0 0 0 / 0.7);
 
   color-scheme: dark;
 }
@@ -190,7 +309,9 @@
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-fast: 0ms;
-    --duration-normal: 0ms;
-    --duration-slow: 0ms;
+    --duration-standard: 0ms;
+    --duration-emphasized: 0ms;
+    --duration-view: 0ms;
+    --duration-sheet: 0ms;
   }
 }
