@@ -14,6 +14,7 @@ import {
 import { useAppActions, useAppState } from '@/state'
 
 import { ActivityChart } from './ActivityChart'
+import { AnalyticsStreak } from './AnalyticsStreak'
 import { HabitRings } from './HabitRings'
 
 const PERIOD_OPTIONS: readonly SegmentedOption<AnalyticsPeriod>[] = [
@@ -71,6 +72,7 @@ function AnalyticsContent() {
   return (
     <DialogContent title="Analytics" className="sm:max-w-2xl">
       <div className="space-y-7 pt-1">
+        {habits.length > 0 && <AnalyticsStreak />}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <SegmentedControl
             label="Period"
