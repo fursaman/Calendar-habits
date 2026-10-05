@@ -1,7 +1,7 @@
 import { ListPlus } from 'lucide-react'
 
 import { Button } from '@/components/ui'
-import { useToday } from '@/hooks'
+import { useToday, useToggleHabit } from '@/hooks'
 import { getDay, getStreak } from '@/lib/habits'
 import { useAppActions, useAppState } from '@/state'
 import type { DateKey } from '@/types'
@@ -17,7 +17,8 @@ export type HabitChecklistProps = {
 /** Every habit for one day with its completion checkbox. Changes apply instantly. */
 export function HabitChecklist({ date, size = 'md', showStreaks = false }: HabitChecklistProps) {
   const { habits, completions } = useAppState()
-  const { toggleCompletion, setSettingsOpen } = useAppActions()
+  const { setSettingsOpen } = useAppActions()
+  const toggleHabit = useToggleHabit()
   const today = useToday()
   const isFuture = date > today
   const day = getDay(completions, date)
@@ -46,7 +47,7 @@ export function HabitChecklist({ date, size = 'md', showStreaks = false }: Habit
                 size={size}
                 checked={day[habit.id] === true}
                 disabled={isFuture}
-                onCheckedChange={() => toggleCompletion({ date, habitId: habit.id })}
+                onCheckedChange={() => toggleHabit(date, habit.id)}
                 meta={streak > 1 ? `${streak}-day streak` : undefined}
               />
             </li>

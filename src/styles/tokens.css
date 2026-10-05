@@ -173,6 +173,8 @@
   --ease-exit: cubic-bezier(0.3, 0, 0.8, 0.15);
   /* Close to the iOS sheet spring, without overshoot. */
   --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  /* A small, single overshoot for rewarding moments like a completed habit. */
+  --ease-pop: cubic-bezier(0.34, 1.45, 0.64, 1);
   --default-transition-duration: var(--duration-standard);
   --default-transition-timing-function: var(--ease-standard);
 
@@ -186,6 +188,10 @@
   --animate-view-prev: view-prev var(--duration-view) var(--ease-emphasized);
   --animate-view-switch: view-switch var(--duration-view) var(--ease-emphasized);
   --animate-check: check var(--duration-standard) var(--ease-emphasized);
+  --animate-check-pop: check var(--duration-emphasized) var(--ease-pop) both;
+  /* Draws the tick after the circle has popped in. */
+  --animate-check-draw: check-draw var(--duration-emphasized) var(--ease-standard)
+    var(--duration-fast) both;
 
   @keyframes fade-in {
     from {
@@ -241,6 +247,14 @@
     from {
       transform: scale(0.6);
       opacity: 0;
+    }
+  }
+  @keyframes check-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
     }
   }
 
