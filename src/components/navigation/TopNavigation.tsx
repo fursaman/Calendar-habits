@@ -7,7 +7,6 @@ import { FILTERED_VIEWS, useToday } from '@/hooks'
 import { fromDateKey, getPeriodKey } from '@/lib/calendar'
 import { cn } from '@/lib/utils'
 import { useAppActions, useAppState, useCalendarNavigation } from '@/state'
-import type { CalendarView } from '@/types'
 
 import { AppIcon } from './AppIcon'
 import { DateNavigator } from './DateNavigator'
@@ -20,7 +19,6 @@ import { PeriodPicker } from './PeriodPicker'
  */
 /** Contained toolbar buttons: Today, Analytics, Settings. */
 const TOOLBAR_BUTTON = 'size-9 rounded-control'
-const SCROLLING_VIEWS: readonly CalendarView[] = ['month', 'week']
 
 export function TopNavigation() {
   const { settings } = useAppState()
@@ -33,7 +31,7 @@ export function TopNavigation() {
     getPeriodKey(date, view, weekStartsOn) === getPeriodKey(fromDateKey(today), view, weekStartsOn)
 
   const actions = (
-    <div className="flex items-center gap-1.5 pl-1">
+    <div className="flex items-center gap-1 pl-1 max-sm:pl-0.5">
       <IconButton
         icon={<ChartNoAxesColumn />}
         label="Analytics"
@@ -64,9 +62,7 @@ export function TopNavigation() {
       onNext={() => go(1)}
       onToday={goToToday}
       isToday={showingToday}
-      todayClassName={cn(TOOLBAR_BUTTON, 'w-auto px-3')}
-      // Month and Week scroll vertically on phones, so their arrows make room for the title.
-      arrowClassName={SCROLLING_VIEWS.includes(view) ? 'max-sm:hidden' : undefined}
+      todayClassName={cn(TOOLBAR_BUTTON, 'w-auto px-3 max-sm:ml-0 max-sm:px-2.5')}
       tooltips
     />
   )
@@ -92,7 +88,7 @@ export function TopNavigation() {
         <div className="space-y-2 px-3 pt-2 pb-2 lg:hidden">
           <div className="flex h-13 items-center justify-between gap-1">
             <div className="flex min-w-0 items-center gap-1.5">
-              <AppIcon className="size-8" />
+              <AppIcon className="size-7" />
               <PeriodPicker compact className="-ml-1" />
             </div>
             <div className="flex items-center">

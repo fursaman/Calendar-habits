@@ -17,7 +17,6 @@ export type DateNavigatorProps = {
   /** Tooltips are useful on desktop toolbars, noise inside the panel. */
   tooltips?: boolean
   todayClassName?: string
-  arrowClassName?: string
   className?: string
 }
 
@@ -32,16 +31,14 @@ export function DateNavigator({
   isToday = false,
   tooltips = false,
   todayClassName,
-  arrowClassName,
   className,
 }: DateNavigatorProps) {
   return (
-    <div className={cn('flex items-center gap-1', className)}>
+    <div className={cn('flex items-center gap-0.5 sm:gap-1', className)}>
       <IconButton
         icon={<ChevronLeft />}
         label={previousLabel}
         tooltip={tooltips}
-        className={arrowClassName}
         onClick={onPrevious}
         size="sm"
       />
@@ -50,7 +47,6 @@ export function DateNavigator({
         icon={<ChevronRight />}
         label={nextLabel}
         tooltip={tooltips}
-        className={arrowClassName}
         onClick={onNext}
         size="sm"
       />
