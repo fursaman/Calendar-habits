@@ -5,14 +5,16 @@ import type { CalendarView, Weekday } from '@/types'
 import { getWeekRange } from './ranges'
 
 /**
- * Locale-aware display formatting. Uses Intl so labels follow the user's
- * language without bundling date-fns locales.
+ * Display formatting with Intl. The app is English-only for now, so every
+ * formatter uses APP_LOCALE rather than the browser language (Safari would
+ * otherwise localize dates). Pass a locale explicitly once translations exist.
  */
+export const APP_LOCALE = 'en-US'
 
 const formatterCache = new Map<string, Intl.DateTimeFormat>()
 
-function getFormatter(options: Intl.DateTimeFormatOptions, locale?: string) {
-  const cacheKey = `${locale ?? ''}|${JSON.stringify(options)}`
+function getFormatter(options: Intl.DateTimeFormatOptions, locale: string = APP_LOCALE) {
+  const cacheKey = `${locale}|${JSON.stringify(options)}`
   let formatter = formatterCache.get(cacheKey)
   if (!formatter) {
     formatter = new Intl.DateTimeFormat(locale, options)
@@ -125,4 +127,14 @@ export function getWeekNumber(date: Date, weekStartsOn: Weekday): number {
 export function formatWeekRange(date: Date, weekStartsOn: Weekday, locale?: string): string {
   const { start, end } = getWeekRange(date, weekStartsOn)
   return getFormatter({ month: 'short', day: 'numeric' }, locale).formatRange(start, end)
+}
+
+/** "J" for January: single-letter month for compact axes. */
+export function formatMonthNarrow(date: Date, locale?: string): string {
+  return getFormatter({ month: 'narrow' }, locale).format(date)
+}
+
+/** "Oct 5" */
+export function formatMonthDayShort(date: Date, locale?: string): string {
+  return getFormatter({ month: 'short', day: 'numeric' }, locale).format(date)
 }

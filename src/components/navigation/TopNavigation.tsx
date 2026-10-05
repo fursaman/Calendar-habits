@@ -78,7 +78,7 @@ export function TopNavigation() {
           </div>
           <CalendarViewSwitcher className="w-80" />
           <div className="flex min-w-0 items-center justify-end gap-1">
-            <PeriodPicker className="mr-1 shrink-0" />
+            <PeriodPicker compact className="mr-1 shrink-0" />
             {navigator}
             {actions}
           </div>

@@ -86,7 +86,7 @@ function HabitEditorForm({
         </>
       }
     >
-      <form id={ids.name + '-form'} onSubmit={submit} className="space-y-6">
+      <form id={ids.name + '-form'} onSubmit={submit} className="space-y-6 pt-1">
         <div className="flex items-center gap-3">
           <HabitGlyph habit={{ color, ...(icon ? { icon } : {}) }} size="lg" />
           <div className="flex-1 space-y-1.5">

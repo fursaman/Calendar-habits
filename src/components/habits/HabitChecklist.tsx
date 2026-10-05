@@ -1,11 +1,9 @@
-import { ListPlus } from 'lucide-react'
-
-import { Button } from '@/components/ui'
 import { useToday, useToggleHabit } from '@/hooks'
 import { getDay, getStreak } from '@/lib/habits'
-import { useAppActions, useAppState } from '@/state'
+import { useAppState } from '@/state'
 import type { DateKey } from '@/types'
 
+import { AddHabitButton } from './AddHabitButton'
 import { HabitRow } from './HabitRow'
 
 export type HabitChecklistProps = {
@@ -17,7 +15,6 @@ export type HabitChecklistProps = {
 /** Every habit for one day with its completion checkbox. Changes apply instantly. */
 export function HabitChecklist({ date, size = 'md', showStreaks = false }: HabitChecklistProps) {
   const { habits, completions } = useAppState()
-  const { setSettingsOpen } = useAppActions()
   const toggleHabit = useToggleHabit()
   const today = useToday()
   const isFuture = date > today
@@ -25,12 +22,9 @@ export function HabitChecklist({ date, size = 'md', showStreaks = false }: Habit
 
   if (habits.length === 0) {
     return (
-      <div className="flex flex-col items-center gap-3 px-6 py-8 text-center">
+      <div className="flex flex-col items-center gap-2 px-3 py-6 text-center">
         <p className="text-body text-muted-foreground">No habits yet. Add one to start tracking.</p>
-        <Button variant="secondary" size="sm" onClick={() => setSettingsOpen(true)}>
-          <ListPlus aria-hidden="true" />
-          Add a habit
-        </Button>
+        <AddHabitButton size={size} />
       </div>
     )
   }
@@ -53,6 +47,9 @@ export function HabitChecklist({ date, size = 'md', showStreaks = false }: Habit
             </li>
           )
         })}
+        <li>
+          <AddHabitButton size={size} />
+        </li>
       </ul>
       {isFuture && (
         <p className="px-3 pt-2 text-caption text-muted-foreground">

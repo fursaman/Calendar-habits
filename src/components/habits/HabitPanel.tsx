@@ -7,7 +7,7 @@ import { Badge, BottomSheet } from '@/components/ui'
 import { useToday } from '@/hooks'
 import {
   formatFullDate,
-  formatMonthDay,
+  formatMonthDayShort,
   formatRelativeDay,
   formatShortDate,
   fromDateKey,
@@ -91,7 +91,7 @@ export function HabitPanel() {
             <span className="block truncate text-nav" aria-live="polite">
               <span className="sr-only">{formatFullDate(date)}</span>
               <span aria-hidden="true">
-                {nearby ? `${nearby}, ${formatMonthDay(date)}` : formatShortDate(date)}
+                {nearby ? `${nearby}, ${formatMonthDayShort(date)}` : formatShortDate(date)}
               </span>
             </span>
           }

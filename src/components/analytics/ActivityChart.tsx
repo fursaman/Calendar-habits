@@ -1,6 +1,12 @@
 import { type CSSProperties, type SyntheticEvent, useRef, useState } from 'react'
 
-import { formatDayOfMonth, formatFullDate, formatMonthYear, formatWeekday } from '@/lib/calendar'
+import {
+  formatDayOfMonth,
+  formatFullDate,
+  formatMonthNarrow,
+  formatMonthYear,
+  formatWeekday,
+} from '@/lib/calendar'
 import { type ActivityBucket, type AnalyticsPeriod, habitColorVar } from '@/lib/habits'
 import { cn } from '@/lib/utils'
 import type { Habit } from '@/types'
@@ -21,7 +27,7 @@ function bucketLabel(bucket: ActivityBucket, period: AnalyticsPeriod) {
 
 function axisLabel(bucket: ActivityBucket, period: AnalyticsPeriod): string | null {
   if (period === 'week') return formatWeekday(bucket.start, 'short')
-  if (period === 'year') return bucket.start.toLocaleDateString(undefined, { month: 'narrow' })
+  if (period === 'year') return formatMonthNarrow(bucket.start)
   const day = bucket.start.getDate()
   return MONTH_TICKS.has(day) ? formatDayOfMonth(bucket.start) : null
 }
