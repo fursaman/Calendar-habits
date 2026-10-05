@@ -51,9 +51,11 @@ const WeekDay = memo(function WeekDay({
 
   return (
     <div
+      // Phones: a table row on the shared column template. From `sm`: a day column.
+      style={{ gridTemplateColumns: columnTemplate(habits.length) }}
       className={cn(
-        'flex items-center gap-3 rounded-lg px-2 py-2 transition-colors duration-fast',
-        'sm:h-full sm:flex-col sm:items-stretch sm:gap-3 sm:px-1.5 sm:py-2',
+        'grid items-center rounded-lg px-1 py-1.5 transition-colors duration-fast',
+        'sm:flex sm:h-full sm:flex-col sm:items-stretch sm:gap-3 sm:px-1.5 sm:py-2',
         isSelected && 'bg-muted',
       )}
     >
@@ -65,7 +67,7 @@ const WeekDay = memo(function WeekDay({
         aria-current={isToday ? 'date' : undefined}
         aria-label={describeDay(date, completed, habits.length, isToday)}
         onClick={() => onSelect(dateKey)}
-        className="flex w-12 shrink-0 flex-col items-center gap-1 rounded-md py-1 transition-colors duration-fast hover:bg-muted sm:w-auto"
+        className="flex shrink-0 flex-col items-center gap-1 rounded-md py-1 transition-colors duration-fast hover:bg-muted"
       >
         <span
           className={cn('text-weekday uppercase', isToday ? 'text-today' : 'text-muted-foreground')}
@@ -75,7 +77,7 @@ const WeekDay = memo(function WeekDay({
         <DayNumber label={formatDayOfMonth(date)} isToday={isToday} isSelected={isSelected} />
       </button>
       <div
-        className="flex min-w-0 flex-1 items-start gap-1 sm:flex-none sm:flex-col sm:items-center sm:gap-2 lg:items-stretch"
+        className="contents sm:flex sm:flex-col sm:items-center sm:gap-2 lg:items-stretch"
         title={isFuture ? 'You can mark habits for this day once it arrives' : undefined}
       >
         {habits.map((habit) => {
@@ -88,9 +90,8 @@ const WeekDay = memo(function WeekDay({
               disabled={isFuture}
               label={`${habit.name}, ${shortDate}${done ? ', completed' : ''}`}
               onClick={() => onToggle(dateKey, habit.id)}
-              showName={isSelected ? 'below' : 'lg'}
-              // Fixed width on phones keeps icons in the same columns on every row.
-              className="max-sm:w-16"
+              showName="lg"
+              className="max-sm:justify-self-center"
             />
           )
         })}
@@ -98,6 +99,36 @@ const WeekDay = memo(function WeekDay({
     </div>
   )
 })
+
+/** Phone layout: a date column, then one equal column per habit. */
+function columnTemplate(habitCount: number) {
+  return `3rem repeat(${habitCount}, minmax(0, 1fr))`
+}
+
+/**
+ * Habit names as a sticky table header on phones. Every column has the same
+ * width, so long names are truncated rather than pushing icons apart.
+ */
+function WeekHabitHeader({ habits }: { habits: readonly Habit[] }) {
+  return (
+    <div
+      aria-hidden="true"
+      style={{ gridTemplateColumns: columnTemplate(habits.length) }}
+      className="sticky top-0 z-10 grid items-end bg-background/90 px-1 pt-1 pb-2 backdrop-blur-md sm:hidden"
+    >
+      <span />
+      {habits.map((habit) => (
+        <span
+          key={habit.id}
+          title={habit.name}
+          className="truncate px-1 text-center text-caption font-medium text-muted-foreground"
+        >
+          {habit.name}
+        </span>
+      ))}
+    </div>
+  )
+}
 
 /** Seven days with every habit, each checkable in one tap. */
 export function WeekCalendar({ date }: { date: Date }) {
@@ -117,8 +148,9 @@ export function WeekCalendar({ date }: { date: Date }) {
       role="group"
       aria-label={`Week of ${formatFullDate(days[0]!)}, ${formatPeriod(date, 'week', weekStartsOn)}`}
       onKeyDown={onKeyDown}
-      className="grid h-full grid-cols-1 content-start gap-1 px-2 py-2 sm:grid-cols-7 sm:content-stretch sm:gap-1.5 sm:px-3"
+      className="grid h-full grid-cols-1 content-start gap-1 px-2 pb-2 sm:grid-cols-7 sm:content-stretch sm:gap-1.5 sm:px-3 sm:pt-2"
     >
+      <WeekHabitHeader habits={habits} />
       {days.map((day) => {
         const key = toDateKey(day)
         return (

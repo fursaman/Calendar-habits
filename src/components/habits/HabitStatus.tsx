@@ -59,11 +59,8 @@ export type HabitToggleProps = Omit<ComponentProps<'button'>, 'children'> & {
   /** Accessible name, e.g. "Sport, Monday 5 October". */
   label: string
   size?: 'md' | 'lg'
-  /**
-   * Habit name placement: `'lg'` beside the icon on large screens only;
-   * `'below'` as a small label under the icon (beside it on large screens).
-   */
-  showName?: false | 'lg' | 'below'
+  /** Show the habit name beside the icon; `'lg'` only on large screens. */
+  showName?: boolean | 'lg'
 }
 
 /** HabitStatus as a toggle button, for checking habits straight from the calendar. */
@@ -83,7 +80,6 @@ export function HabitToggle({
       aria-label={label}
       className={cn(
         'group/toggle flex min-w-0 items-center gap-2 rounded-pill text-left disabled:cursor-default disabled:opacity-50',
-        showName === 'below' && 'flex-col gap-1 rounded-md lg:flex-row lg:gap-2 lg:rounded-pill',
         className,
       )}
       {...props}
@@ -100,8 +96,6 @@ export function HabitToggle({
             'truncate text-caption',
             completed ? 'text-foreground' : 'text-muted-foreground',
             showName === 'lg' && 'hidden lg:inline',
-            showName === 'below' &&
-              'max-w-16 animate-fade-in text-center text-date-sm lg:max-w-none lg:text-left lg:text-caption',
           )}
         >
           {habit.name}
