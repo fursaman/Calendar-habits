@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 
-/** The app mark: a violet calendar with a gold bolt (same file as the favicon). */
+/** The app mark (same file as the favicon). */
 export function AppIcon({ className }: { className?: string }) {
   return (
     <img
@@ -8,7 +8,7 @@ export function AppIcon({ className }: { className?: string }) {
       alt=""
       aria-hidden="true"
       draggable={false}
-      className={cn('size-9 shrink-0 object-contain select-none', className)}
+      className={cn('size-9 shrink-0 select-none', className)}
     />
   )
 }

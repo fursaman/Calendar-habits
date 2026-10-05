@@ -1,16 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
-  <defs>
-    <linearGradient id="hc-tile" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#9D5CFF"/>
-      <stop offset="1" stop-color="#5B2BE0"/>
-    </linearGradient>
-    <linearGradient id="hc-bolt" x1="18" y1="14" x2="30" y2="40" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#FFEA83"/>
-      <stop offset="1" stop-color="#FFA800"/>
-    </linearGradient>
-  </defs>
-  <rect x="4" y="7" width="40" height="37" rx="10" fill="url(#hc-tile)"/>
-  <rect x="13" y="3" width="4" height="9" rx="2" fill="#5B2BE0"/>
-  <rect x="31" y="3" width="4" height="9" rx="2" fill="#5B2BE0"/>
-  <path d="M27.5 15 16 29h7l-3.5 11L32 24.5h-7.5l3-9.5Z" fill="url(#hc-bolt)"/>
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 6C0 2.68629 2.68629 0 6 0H14C17.3137 0 20 2.68629 20 6V14C20 17.3137 17.3137 20 14 20H6C2.68629 20 0 17.3137 0 14V6Z" fill="#191414"/>
+<path d="M3.2998 8.97311C3.2998 6.15103 5.58756 3.86328 8.40964 3.86328H10.3258V10.8893C10.3258 13.7114 8.03807 15.9991 5.21599 15.9991H3.2998V8.97311Z" fill="white"/>
+<path d="M10.3262 14.0844C10.3262 11.2624 12.6139 8.97461 15.436 8.97461H17.3522V10.8908C17.3522 13.7129 15.0644 16.0006 12.2424 16.0006H10.3262V14.0844Z" fill="white"/>
 </svg>
