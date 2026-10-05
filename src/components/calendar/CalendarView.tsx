@@ -7,7 +7,7 @@ import { useAppState, useCalendarNavigation } from '@/state'
 import type { CalendarView as View } from '@/types'
 
 import { DayCalendar } from './DayCalendar'
-import { MonthCalendar } from './MonthCalendar'
+import { MonthScroller } from './MonthScroller'
 import { WeekCalendar } from './WeekCalendar'
 import { YearCalendar } from './YearCalendar'
 
@@ -37,14 +37,25 @@ export function CalendarView({ className }: { className?: string }) {
   const [transition, setTransition] = useState<Transition>('none')
   if (previous.view !== view || previous.periodKey !== periodKey) {
     setTransition(
-      previous.view !== view ? 'switch' : date.getTime() > previous.time ? 'next' : 'prev',
+      previous.view !== view
+        ? 'switch'
+        : // Month view moves by scrolling, so it needs no slide of its own.
+          view === 'month'
+          ? 'none'
+          : date.getTime() > previous.time
+            ? 'next'
+            : 'prev',
     )
     setPrevious({ view, periodKey, time: date.getTime() })
   }
 
   return (
-    <div {...swipe} className={cn('touch-pan-y overflow-x-clip', className)}>
-      <div key={`${view}:${periodKey}`} className={cn('h-full', TRANSITION_CLASS[transition])}>
+    <div {...swipe} className={cn('touch-pan-y overflow-x-hidden', className)}>
+      {/* Month view stays mounted across months so its scroll position survives. */}
+      <div
+        key={view === 'month' ? view : `${view}:${periodKey}`}
+        className={cn('h-full', TRANSITION_CLASS[transition])}
+      >
         {renderView(view, date)}
       </div>
     </div>
@@ -56,7 +67,7 @@ function renderView(view: View, date: Date) {
     case 'year':
       return <YearCalendar date={date} />
     case 'month':
-      return <MonthCalendar date={date} />
+      return <MonthScroller date={date} />
     case 'week':
       return <WeekCalendar date={date} />
     case 'day':

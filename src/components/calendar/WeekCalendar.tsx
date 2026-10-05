@@ -1,12 +1,19 @@
 import { memo } from 'react'
 
-import { HabitStatus } from '@/components/habits/HabitStatus'
-import { useGridNavigation, useToday, useVisibleHabits, useWeekDays } from '@/hooks'
-import { formatDayOfMonth, formatPeriod, formatWeekday, toDateKey } from '@/lib/calendar'
+import { HabitToggle } from '@/components/habits/HabitStatus'
+import { useGridNavigation, useToday, useToggleHabit, useVisibleHabits, useWeekDays } from '@/hooks'
+import {
+  formatDayOfMonth,
+  formatFullDate,
+  formatPeriod,
+  formatShortDate,
+  formatWeekday,
+  toDateKey,
+} from '@/lib/calendar'
 import { getCompletedHabits, getDay } from '@/lib/habits'
 import { cn } from '@/lib/utils'
 import { useAppActions, useAppState } from '@/state'
-import type { DateKey, DayCompletions, Habit } from '@/types'
+import type { DateKey, DayCompletions, Habit, HabitId } from '@/types'
 
 import { describeDay } from './day-label'
 import { DayNumber } from './DayNumber'
@@ -18,12 +25,15 @@ type WeekDayProps = {
   habits: readonly Habit[]
   isToday: boolean
   isSelected: boolean
+  isFuture: boolean
   onSelect: (date: DateKey) => void
+  onToggle: (date: DateKey, habitId: HabitId) => void
 }
 
 /**
  * One day of the week. A row on phones (date on the left, habits on the
  * right) and a column from `sm` up, so seven days fit without overflow.
+ * The date selects the day; each habit icon checks it off directly.
  */
 const WeekDay = memo(function WeekDay({
   date,
@@ -32,59 +42,66 @@ const WeekDay = memo(function WeekDay({
   habits,
   isToday,
   isSelected,
+  isFuture,
   onSelect,
+  onToggle,
 }: WeekDayProps) {
   const completed = getCompletedHabits(day, habits)
+  const shortDate = formatShortDate(date)
+
   return (
-    <button
-      type="button"
-      data-grid-cell
-      tabIndex={isSelected ? 0 : -1}
-      aria-pressed={isSelected}
-      aria-current={isToday ? 'date' : undefined}
-      aria-label={describeDay(date, completed, habits.length, isToday)}
-      onClick={() => onSelect(dateKey)}
+    <div
       className={cn(
-        'flex items-center gap-4 rounded-lg px-3 py-2.5 text-left outline-offset-[-2px]',
-        'transition-colors duration-fast hover:bg-muted active:bg-surface-tertiary',
-        'sm:h-full sm:flex-col sm:items-stretch sm:gap-3 sm:px-2 sm:py-3',
+        'flex items-center gap-3 rounded-lg px-2 py-2 transition-colors duration-fast',
+        'sm:h-full sm:flex-col sm:items-stretch sm:gap-3 sm:px-1.5 sm:py-2',
         isSelected && 'bg-muted',
       )}
     >
-      <span className="flex w-12 shrink-0 flex-col items-center gap-1 sm:w-auto">
+      <button
+        type="button"
+        data-grid-cell
+        tabIndex={isSelected ? 0 : -1}
+        aria-pressed={isSelected}
+        aria-current={isToday ? 'date' : undefined}
+        aria-label={describeDay(date, completed, habits.length, isToday)}
+        onClick={() => onSelect(dateKey)}
+        className="flex w-12 shrink-0 flex-col items-center gap-1 rounded-md py-1 transition-colors duration-fast hover:bg-muted sm:w-auto"
+      >
         <span
           className={cn('text-weekday uppercase', isToday ? 'text-today' : 'text-muted-foreground')}
         >
           {formatWeekday(date, 'short')}
         </span>
         <DayNumber label={formatDayOfMonth(date)} isToday={isToday} isSelected={isSelected} />
-      </span>
-      <span className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5 sm:flex-none sm:flex-col sm:items-stretch sm:gap-1">
-        {habits.map((habit) => (
-          <span
-            key={habit.id}
-            className="flex min-w-0 items-center gap-2 sm:rounded-md sm:px-1 sm:py-0.5"
-          >
-            <HabitStatus habit={habit} completed={day[habit.id] === true} />
-            <span
-              className={cn(
-                'hidden truncate text-caption lg:inline',
-                day[habit.id] ? 'text-foreground' : 'text-muted-foreground',
-              )}
-            >
-              {habit.name}
-            </span>
-          </span>
-        ))}
-      </span>
-    </button>
+      </button>
+      <div
+        className="flex min-w-0 flex-1 items-center justify-between gap-1 sm:flex-none sm:flex-col sm:items-center sm:justify-start sm:gap-2 lg:items-stretch"
+        title={isFuture ? 'You can mark habits for this day once it arrives' : undefined}
+      >
+        {habits.map((habit) => {
+          const done = day[habit.id] === true
+          return (
+            <HabitToggle
+              key={habit.id}
+              habit={habit}
+              completed={done}
+              disabled={isFuture}
+              label={`${habit.name}, ${shortDate}${done ? ', completed' : ''}`}
+              onClick={() => onToggle(dateKey, habit.id)}
+              showName="lg"
+            />
+          )
+        })}
+      </div>
+    </div>
   )
 })
 
-/** Seven days with each habit's state, for a closer look than the month grid. */
+/** Seven days with every habit, each checkable in one tap. */
 export function WeekCalendar({ date }: { date: Date }) {
   const { completions, activeDate, settings } = useAppState()
   const { selectDate } = useAppActions()
+  const toggleHabit = useToggleHabit()
   const habits = useVisibleHabits()
   const today = useToday()
   const { weekStartsOn } = settings.calendar
@@ -96,7 +113,7 @@ export function WeekCalendar({ date }: { date: Date }) {
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <div
       role="group"
-      aria-label={formatPeriod(date, 'week', weekStartsOn)}
+      aria-label={`Week of ${formatFullDate(days[0]!)}, ${formatPeriod(date, 'week', weekStartsOn)}`}
       onKeyDown={onKeyDown}
       className="grid h-full grid-cols-1 content-start gap-1 px-2 py-2 sm:grid-cols-7 sm:content-stretch sm:gap-1.5 sm:px-3"
     >
@@ -111,7 +128,9 @@ export function WeekCalendar({ date }: { date: Date }) {
             habits={habits}
             isToday={key === today}
             isSelected={key === activeDate}
+            isFuture={key > today}
             onSelect={selectDate}
+            onToggle={toggleHabit}
           />
         )
       })}

@@ -1,5 +1,6 @@
 import { memo } from 'react'
 
+import { HabitCheck } from '@/components/habits/HabitCheck'
 import { HabitDots } from '@/components/habits/HabitIndicator'
 import { formatDayOfMonth } from '@/lib/calendar'
 import { getCompletedHabits } from '@/lib/habits'
@@ -56,7 +57,12 @@ export const CalendarDayCell = memo(function CalendarDayCell({
           isSelected={isSelected}
           isOutside={isOutside}
         />
-        <HabitDots habits={completed} />
+        {/* One habit in focus: a colored check. Several: a compact row of dots. */}
+        {habits.length === 1 ? (
+          completed[0] && <HabitCheck habit={completed[0]} className="lg:size-6" />
+        ) : (
+          <HabitDots habits={completed} />
+        )}
       </button>
     </div>
   )

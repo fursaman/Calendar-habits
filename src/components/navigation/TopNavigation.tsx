@@ -3,8 +3,9 @@ import { CalendarCheck2, Settings } from 'lucide-react'
 import { CalendarViewSwitcher } from '@/components/calendar/CalendarViewSwitcher'
 import { HabitFilterBar } from '@/components/habits/HabitFilterBar'
 import { IconButton } from '@/components/ui'
-import { useToday } from '@/hooks'
+import { FILTERED_VIEWS, useToday } from '@/hooks'
 import { fromDateKey, getPeriodKey } from '@/lib/calendar'
+import { cn } from '@/lib/utils'
 import { useAppActions, useAppState, useCalendarNavigation } from '@/state'
 
 import { DateNavigator } from './DateNavigator'
@@ -21,6 +22,7 @@ export function TopNavigation() {
   const { date, view, go, goToToday } = useCalendarNavigation()
   const today = useToday()
   const { weekStartsOn } = settings.calendar
+  const showFilter = FILTERED_VIEWS.includes(view)
   const showingToday =
     getPeriodKey(date, view, weekStartsOn) === getPeriodKey(fromDateKey(today), view, weekStartsOn)
 
@@ -78,7 +80,18 @@ export function TopNavigation() {
           <CalendarViewSwitcher className="w-full sm:mx-auto sm:max-w-sm" />
         </div>
 
-        <HabitFilterBar className="pb-2.5 lg:px-6" />
+        {/* Week and Day show every habit, so the filter folds away there. */}
+        <div
+          inert={!showFilter}
+          className={cn(
+            'grid transition-[grid-template-rows,opacity] duration-emphasized ease-emphasized',
+            showFilter ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
+          )}
+        >
+          <div className="min-h-0 overflow-hidden">
+            <HabitFilterBar className="pb-2.5 lg:px-6" />
+          </div>
+        </div>
       </div>
     </header>
   )

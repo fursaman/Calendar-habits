@@ -12,9 +12,9 @@ export function App() {
     <TooltipProvider>
       <div className="flex h-dvh flex-col">
         <TopNavigation />
-        {/* Bottom padding keeps the last calendar row clear of the collapsed habit panel. */}
-        <main className="mx-auto flex min-h-0 w-full max-w-content flex-1 flex-col overflow-y-auto pb-[calc(var(--spacing-sheet-peek)+env(safe-area-inset-bottom)+--spacing(2))] sm:pb-[calc(var(--spacing-sheet-peek)+--spacing(5))] md:px-2 lg:px-4">
-          <CalendarView className="flex-1" />
+        <main className="mx-auto flex min-h-0 w-full max-w-content flex-1 flex-col md:px-2 lg:px-4">
+          {/* Bottom padding keeps content clear of the collapsed habit panel. */}
+          <CalendarView className="min-h-0 flex-1 overflow-y-auto pb-[calc(var(--spacing-sheet-peek)+env(safe-area-inset-bottom)+--spacing(2))] sm:pb-[calc(var(--spacing-sheet-peek)+--spacing(5))]" />
         </main>
         <HabitPanel />
         <SettingsDialog />
