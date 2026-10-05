@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="hc-a" x1="6" y1="6" x2="40" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#41D1FF"/>
+      <stop offset="1" stop-color="#7B3BFF"/>
+    </linearGradient>
+    <linearGradient id="hc-b" x1="22" y1="4" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFEA83"/>
+      <stop offset=".6" stop-color="#FFC233"/>
+      <stop offset="1" stop-color="#FF8A00"/>
+    </linearGradient>
+  </defs>
+  <!-- Checkmark whose long stroke breaks like a lightning bolt -->
+  <path d="M3.5 24.5 9 19l9.5 9.5L30 13l-3 10.5 8-2L20.5 42.5a2 2 0 0 1-2.9.1L3.6 27.4a2 2 0 0 1-.1-2.9Z" fill="url(#hc-a)"/>
+  <!-- Spark -->
+  <path d="M33.5 4.5 26 17h6.5L29 27l11-14h-7l3.5-8.5h-3Z" fill="url(#hc-b)"/>
+</svg>

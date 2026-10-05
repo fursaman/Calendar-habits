@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 
-/** The app mark: the gradient lightning favicon, crisp at any size. */
+/** The app mark: a violet calendar with a gold bolt (same file as the favicon). */
 export function AppIcon({ className }: { className?: string }) {
   return (
     <img

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="hc-s" x1="4" y1="44" x2="44" y2="4" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7B3BFF"/>
+      <stop offset=".55" stop-color="#C04BFF"/>
+      <stop offset="1" stop-color="#FFB224"/>
+    </linearGradient>
+  </defs>
+  <!-- Rising streak of days that turns into a bolt -->
+  <rect x="4" y="30" width="9" height="14" rx="4.5" fill="url(#hc-s)" opacity=".55"/>
+  <rect x="15.5" y="22" width="9" height="22" rx="4.5" fill="url(#hc-s)" opacity=".75"/>
+  <path d="M38 3 27 21h7l-6 23 16-26h-8l5-15h-3Z" fill="url(#hc-s)"/>
+</svg>
