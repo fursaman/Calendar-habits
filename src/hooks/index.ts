@@ -1,4 +1,7 @@
 export { useMonthGrid, useWeekdayHeaders, useWeekDays, useYearMonths } from './useCalendarGrid'
+export { useGridNavigation } from './useGridNavigation'
 export { useMediaQuery } from './useMediaQuery'
+export { useSwipe } from './useSwipe'
 export { useTheme, useThemeSync } from './useTheme'
 export { useToday } from './useToday'
+export { useVisibleHabits } from './useVisibleHabits'
