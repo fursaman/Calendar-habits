@@ -10,17 +10,27 @@ export type SegmentedControlProps<T extends string> = {
   options: readonly SegmentedOption<T>[]
   /** Accessible name for the group. */
   label: string
+  size?: 'sm' | 'md'
   className?: string
 }
 
-/** Single-choice pill switcher, e.g. Week / Month / Year. Arrow keys move between options. */
+/**
+ * Single-choice pill switcher, e.g. Year / Month / Week / Day. Arrow keys move
+ * between options; the active pill slides between positions.
+ */
 export function SegmentedControl<T extends string>({
   value,
   onValueChange,
   options,
   label,
+  size = 'md',
   className,
 }: SegmentedControlProps<T>) {
+  const activeIndex = Math.max(
+    0,
+    options.findIndex((option) => option.value === value),
+  )
+
   return (
     <ToggleGroup.Root
       type="single"
@@ -28,16 +38,27 @@ export function SegmentedControl<T extends string>({
       // Radix emits '' when the active item is clicked again; keep a value selected.
       onValueChange={(next) => next && onValueChange(next as T)}
       aria-label={label}
-      className={cn('inline-flex w-full rounded-lg bg-surface-tertiary p-1', className)}
+      className={cn(
+        'relative isolate grid auto-cols-fr grid-flow-col rounded-md bg-surface-tertiary p-0.5 dark:bg-surface-secondary',
+        className,
+      )}
     >
+      <span
+        aria-hidden="true"
+        className="absolute inset-y-0.5 left-0.5 -z-10 rounded-[calc(var(--radius-md)-2px)] bg-control-thumb shadow-floating transition-transform duration-emphasized ease-emphasized"
+        style={{
+          width: `calc((100% - 4px) / ${options.length})`,
+          transform: `translateX(${activeIndex * 100}%)`,
+        }}
+      />
       {options.map((option) => (
         <ToggleGroup.Item
           key={option.value}
           value={option.value}
           className={cn(
-            'h-control-sm flex-1 rounded-md px-3 text-sm font-medium text-muted-foreground',
-            'transition-colors duration-fast hover:text-foreground',
-            'data-[state=on]:bg-surface data-[state=on]:text-foreground data-[state=on]:shadow-sm',
+            'rounded-[calc(var(--radius-md)-2px)] px-3 text-label whitespace-nowrap text-muted-foreground',
+            'transition-colors duration-fast hover:text-foreground data-[state=on]:text-foreground',
+            size === 'sm' ? 'h-7' : 'h-8',
           )}
         >
           {option.label}

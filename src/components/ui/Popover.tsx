@@ -8,18 +8,23 @@ import { floatingSurfaceClassName } from './overlay'
 export const Popover = PopoverPrimitive.Root
 export const PopoverTrigger = PopoverPrimitive.Trigger
 export const PopoverClose = PopoverPrimitive.Close
+export const PopoverAnchor = PopoverPrimitive.Anchor
 
 export function PopoverContent({
   className,
-  sideOffset = 6,
+  sideOffset = 8,
   ...props
 }: ComponentProps<typeof PopoverPrimitive.Content>) {
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content
         sideOffset={sideOffset}
-        collisionPadding={16}
-        className={cn(floatingSurfaceClassName, 'w-72 p-4', className)}
+        collisionPadding={12}
+        className={cn(
+          floatingSurfaceClassName,
+          'origin-(--radix-popover-content-transform-origin) p-3',
+          className,
+        )}
         {...props}
       />
     </PopoverPrimitive.Portal>

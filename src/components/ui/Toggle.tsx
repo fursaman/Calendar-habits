@@ -8,14 +8,14 @@ export function Toggle({ className, ...props }: ComponentProps<typeof Switch.Roo
   return (
     <Switch.Root
       className={cn(
-        'inline-flex h-7 w-12 shrink-0 items-center rounded-full p-0.5',
-        'bg-surface-tertiary transition-colors duration-normal data-[state=checked]:bg-primary',
-        'disabled:cursor-not-allowed disabled:opacity-50',
+        'inline-flex h-7 w-12 shrink-0 items-center rounded-pill p-0.5',
+        'bg-surface-tertiary transition-colors duration-standard data-[state=checked]:bg-success',
+        'disabled:cursor-not-allowed disabled:opacity-40',
         className,
       )}
       {...props}
     >
-      <Switch.Thumb className="block size-6 rounded-full bg-surface shadow-sm transition-transform duration-normal data-[state=checked]:translate-x-5" />
+      <Switch.Thumb className="block size-6 rounded-pill bg-surface shadow-floating transition-transform duration-standard ease-emphasized data-[state=checked]:translate-x-5" />
     </Switch.Root>
   )
 }

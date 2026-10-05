@@ -18,8 +18,12 @@ export function DropdownMenuContent({
     <MenuPrimitive.Portal>
       <MenuPrimitive.Content
         sideOffset={sideOffset}
-        collisionPadding={16}
-        className={cn(floatingSurfaceClassName, 'min-w-48 p-1', className)}
+        collisionPadding={12}
+        className={cn(
+          floatingSurfaceClassName,
+          'min-w-44 origin-(--radix-dropdown-menu-content-transform-origin) p-1',
+          className,
+        )}
         {...props}
       />
     </MenuPrimitive.Portal>
@@ -38,9 +42,9 @@ export function DropdownMenuItem({
   return (
     <MenuPrimitive.Item
       className={cn(
-        'flex h-control-md cursor-default items-center gap-2 rounded-md px-3 text-sm outline-none select-none',
-        'data-disabled:opacity-50 data-highlighted:bg-muted [&_svg]:size-4',
-        variant === 'destructive' && 'text-destructive',
+        'flex h-control-md cursor-default items-center gap-2.5 rounded-sm px-3 text-body outline-none select-none',
+        'data-disabled:opacity-40 data-highlighted:bg-muted [&_svg]:size-4 [&_svg]:text-muted-foreground',
+        variant === 'destructive' && 'text-destructive [&_svg]:text-destructive',
         className,
       )}
       {...props}
@@ -63,7 +67,7 @@ export function DropdownMenuLabel({
 }: ComponentProps<typeof MenuPrimitive.Label>) {
   return (
     <MenuPrimitive.Label
-      className={cn('px-3 py-1.5 text-xs font-medium text-muted-foreground', className)}
+      className={cn('px-3 py-1.5 text-caption text-muted-foreground', className)}
       {...props}
     />
   )

@@ -1,13 +1,10 @@
-export {
-  BottomSheet,
-  BottomSheetClose,
-  BottomSheetContent,
-  type BottomSheetContentProps,
-  BottomSheetTrigger,
-} from './BottomSheet'
+export { Badge, type BadgeProps } from './Badge'
+export { BottomSheet, type BottomSheetProps, type SheetSnap } from './BottomSheet'
 export { Button, type ButtonProps } from './Button'
 export { buttonVariants } from './button-variants'
 export { Checkbox, type CheckboxProps } from './Checkbox'
+export { type ChoiceChip, ChoiceChips, type ChoiceChipsProps } from './ChoiceChips'
+export { ConfirmDialog, type ConfirmDialogProps } from './ConfirmDialog'
 export {
   Dialog,
   DialogClose,
@@ -16,6 +13,13 @@ export {
   DialogTrigger,
 } from './Dialog'
 export { Divider } from './Divider'
+export {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  type DrawerContentProps,
+  DrawerTrigger,
+} from './Drawer'
 export {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,7 +33,7 @@ export {
 export { IconButton, type IconButtonProps } from './IconButton'
 export { Input, type InputProps } from './Input'
 export { Label } from './Label'
-export { Popover, PopoverClose, PopoverContent, PopoverTrigger } from './Popover'
+export { Popover, PopoverAnchor, PopoverClose, PopoverContent, PopoverTrigger } from './Popover'
 export {
   SegmentedControl,
   type SegmentedControlProps,

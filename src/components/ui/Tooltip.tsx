@@ -1,7 +1,7 @@
 import { Tooltip as TooltipPrimitive } from 'radix-ui'
 import type { ReactElement, ReactNode } from 'react'
 
-const TOOLTIP_DELAY_MS = 400
+const TOOLTIP_DELAY_MS = 500
 
 /** Wrap the app once so tooltips share open/close timing. */
 export function TooltipProvider({ children }: { children: ReactNode }) {
@@ -22,7 +22,7 @@ export type TooltipProps = {
  * Supplementary hint on hover/focus. Never put essential information here:
  * touch devices have no hover.
  */
-export function Tooltip({ content, children, side = 'top' }: TooltipProps) {
+export function Tooltip({ content, children, side = 'bottom' }: TooltipProps) {
   return (
     <TooltipPrimitive.Root>
       <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
@@ -30,7 +30,7 @@ export function Tooltip({ content, children, side = 'top' }: TooltipProps) {
         <TooltipPrimitive.Content
           side={side}
           sideOffset={6}
-          className="z-(--z-tooltip) rounded-md bg-foreground px-2 py-1 text-xs text-background shadow-md data-[state=delayed-open]:animate-fade-in"
+          className="z-(--z-tooltip) rounded-sm bg-foreground px-2 py-1 text-caption font-medium text-background shadow-floating data-[state=closed]:animate-fade-out data-[state=delayed-open]:animate-fade-in"
         >
           {content}
         </TooltipPrimitive.Content>
