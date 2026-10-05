@@ -112,5 +112,6 @@ export function parseSettings(value: unknown, defaults: UserSettings): UserSetti
   return {
     theme: isOneOf<ThemePreference>(THEME_PREFERENCES, value.theme) ? value.theme : defaults.theme,
     calendar: parseCalendarPreferences(value.calendar, defaults.calendar),
+    sounds: typeof value.sounds === 'boolean' ? value.sounds : defaults.sounds,
   }
 }

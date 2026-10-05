@@ -6,4 +6,5 @@ export const DEFAULT_SETTINGS: UserSettings = {
     weekStartsOn: 1,
     defaultView: 'month',
   },
+  sounds: true,
 }

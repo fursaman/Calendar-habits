@@ -92,10 +92,13 @@ export function formatPeriod(
       return formatMonthYear(date, locale)
     case 'week': {
       const { start, end } = getWeekRange(date, weekStartsOn)
-      return getFormatter({ month: 'short', day: 'numeric', year: 'numeric' }, locale).formatRange(
-        start,
-        end,
-      )
+      // Skip the year for weeks in the current year to keep the title short.
+      const thisYear = new Date().getFullYear()
+      const showYear = start.getFullYear() !== thisYear || end.getFullYear() !== thisYear
+      return getFormatter(
+        { month: 'short', day: 'numeric', ...(showYear ? { year: 'numeric' } : {}) },
+        locale,
+      ).formatRange(start, end)
     }
     case 'day':
       return getFormatter({ month: 'long', day: 'numeric', year: 'numeric' }, locale).format(date)

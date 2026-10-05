@@ -9,7 +9,8 @@ export function createInitialState(data: AppData, now: Date = new Date()): AppSt
     ...data,
     activeDate: todayKey(now),
     view: data.settings.calendar.defaultView,
-    habitFilter: 'all',
+    // Start focused on one habit; "All Habits" stays one tap away.
+    habitFilter: data.habits[0]?.id ?? 'all',
     panel: 'collapsed',
     settingsOpen: false,
   }
@@ -40,13 +41,16 @@ export function appReducer(state: AppState, action: AppAction): AppState {
           habit.id === action.habitId ? { ...habit, ...action.changes } : habit,
         ),
       }
-    case 'habits/remove':
+    case 'habits/remove': {
+      const habits = state.habits.filter((habit) => habit.id !== action.habitId)
       return {
         ...state,
-        habits: state.habits.filter((habit) => habit.id !== action.habitId),
+        habits,
         completions: removeHabitCompletions(state.completions, action.habitId),
-        habitFilter: state.habitFilter === action.habitId ? 'all' : state.habitFilter,
+        habitFilter:
+          state.habitFilter === action.habitId ? (habits[0]?.id ?? 'all') : state.habitFilter,
       }
+    }
 
     case 'completions/toggle':
       return {

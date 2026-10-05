@@ -15,6 +15,7 @@ describe('appReducer', () => {
   it('starts on today in local time with the default view', () => {
     expect(initial.activeDate).toBe('2026-10-05')
     expect(initial.view).toBe('month')
+    expect(initial.habitFilter).toBe('sport')
   })
 
   it('selecting a date reveals the habit panel', () => {
@@ -40,7 +41,8 @@ describe('appReducer', () => {
     state = appReducer(state, { type: 'calendar/setHabitFilter', filter: 'sport' })
     state = appReducer(state, { type: 'habits/remove', habitId: 'sport' })
     expect(state.completions).toEqual({})
-    expect(state.habitFilter).toBe('all')
+    // Falls back to the first remaining habit.
+    expect(state.habitFilter).toBe('healthy-eating')
     expect(state.habits.some((habit) => habit.id === 'sport')).toBe(false)
   })
 })

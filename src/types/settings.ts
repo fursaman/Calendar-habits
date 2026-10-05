@@ -15,4 +15,6 @@ export type CalendarPreferences = {
 export type UserSettings = {
   theme: ThemePreference
   calendar: CalendarPreferences
+  /** Play a short sound when a habit is completed. */
+  sounds: boolean
 }
