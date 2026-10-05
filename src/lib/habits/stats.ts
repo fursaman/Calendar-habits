@@ -29,3 +29,30 @@ export function getMonthCount(map: CompletionMap, habitId: HabitId, date: DateKe
     isCompleted(map, toDateKey(day), habitId),
   ).length
 }
+
+export type StreakLink = {
+  /** The previous day is also completed: draw the streak line in from the left. */
+  joinsPrevious: boolean
+  /** The next day is also completed: draw the streak line out to the right. */
+  joinsNext: boolean
+  /** Set on the last day of a streak of two or more days. */
+  length?: number
+}
+
+/** Streak links for each completed day among `dates`, for drawing streak lines. */
+export function getStreakLinks(
+  map: CompletionMap,
+  habitId: HabitId,
+  dates: readonly DateKey[],
+): Map<DateKey, StreakLink> {
+  const links = new Map<DateKey, StreakLink>()
+  for (const key of dates) {
+    if (!isCompleted(map, key, habitId)) continue
+    const day = fromDateKey(key)
+    const joinsPrevious = isCompleted(map, toDateKey(addDays(day, -1)), habitId)
+    const joinsNext = isCompleted(map, toDateKey(addDays(day, 1)), habitId)
+    const length = joinsPrevious && !joinsNext ? getStreak(map, habitId, key) : undefined
+    links.set(key, { joinsPrevious, joinsNext, ...(length ? { length } : {}) })
+  }
+  return links
+}

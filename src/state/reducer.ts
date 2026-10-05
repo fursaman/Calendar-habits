@@ -13,6 +13,7 @@ export function createInitialState(data: AppData, now: Date = new Date()): AppSt
     habitFilter: data.habits[0]?.id ?? 'all',
     panel: 'collapsed',
     settingsOpen: false,
+    analyticsOpen: false,
   }
 }
 
@@ -74,5 +75,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       return state.panel === action.snap ? state : { ...state, panel: action.snap }
     case 'settings/setOpen':
       return { ...state, settingsOpen: action.open }
+    case 'analytics/setOpen':
+      return { ...state, analyticsOpen: action.open }
   }
 }

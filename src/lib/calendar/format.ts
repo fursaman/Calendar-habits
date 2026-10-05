@@ -84,12 +84,15 @@ export function formatPeriod(
   view: CalendarView,
   weekStartsOn: Weekday,
   locale?: string,
+  /** Shorter month names, for narrow screens. */
+  compact = false,
 ): string {
+  const month = compact ? 'short' : 'long'
   switch (view) {
     case 'year':
       return formatYear(date, locale)
     case 'month':
-      return formatMonthYear(date, locale)
+      return getFormatter({ month, year: 'numeric' }, locale).format(date)
     case 'week': {
       const { start, end } = getWeekRange(date, weekStartsOn)
       // Skip the year for weeks in the current year to keep the title short.
@@ -101,6 +104,9 @@ export function formatPeriod(
       ).formatRange(start, end)
     }
     case 'day':
-      return getFormatter({ month: 'long', day: 'numeric', year: 'numeric' }, locale).format(date)
+      return getFormatter(
+        { month, day: 'numeric', ...(compact ? {} : { year: 'numeric' }) },
+        locale,
+      ).format(date)
   }
 }

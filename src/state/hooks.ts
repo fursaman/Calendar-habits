@@ -51,6 +51,7 @@ export function useAppActions() {
       setPanel: (snap: Payload<'panel/setSnap'>['snap']) =>
         dispatch({ type: 'panel/setSnap', snap }),
       setSettingsOpen: (open: boolean) => dispatch({ type: 'settings/setOpen', open }),
+      setAnalyticsOpen: (open: boolean) => dispatch({ type: 'analytics/setOpen', open }),
     }),
     [dispatch],
   )

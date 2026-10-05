@@ -23,6 +23,7 @@ export type AppState = {
   habitFilter: HabitFilter
   panel: PanelSnap
   settingsOpen: boolean
+  analyticsOpen: boolean
 }
 
 export type AppAction =
@@ -38,3 +39,4 @@ export type AppAction =
   | { type: 'settings/update'; changes: Partial<UserSettings> }
   | { type: 'panel/setSnap'; snap: PanelSnap }
   | { type: 'settings/setOpen'; open: boolean }
+  | { type: 'analytics/setOpen'; open: boolean }

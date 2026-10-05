@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import type { CompletionMap, DateKey } from '@/types'
 
-import { getMonthCount, getStreak } from './stats'
+import { getMonthCount, getStreak, getStreakLinks } from './stats'
 
 const map: CompletionMap = {
   ['2026-09-29' as DateKey]: { sport: true },
@@ -25,5 +25,20 @@ describe('habit stats', () => {
   it('counts completions in the month', () => {
     expect(getMonthCount(map, 'sport', '2026-10-15' as DateKey)).toBe(2)
     expect(getMonthCount(map, 'reading', '2026-10-15' as DateKey)).toBe(2)
+  })
+})
+
+describe('streak links', () => {
+  it('links consecutive days and labels the streak end', () => {
+    const keys = ['2026-10-01', '2026-10-02', '2026-10-03', '2026-10-04'] as DateKey[]
+    const links = getStreakLinks(map, 'sport', keys)
+    expect(links.get(keys[0]!)).toEqual({ joinsPrevious: true, joinsNext: true })
+    expect(links.get(keys[1]!)).toEqual({ joinsPrevious: true, joinsNext: false, length: 4 })
+    expect(links.has(keys[2]!)).toBe(false)
+    // A single completed day has no streak label.
+    expect(getStreakLinks(map, 'reading', keys).get(keys[3]!)).toEqual({
+      joinsPrevious: false,
+      joinsNext: false,
+    })
   })
 })
