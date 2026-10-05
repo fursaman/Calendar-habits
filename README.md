@@ -1,8 +1,18 @@
 # Habit Calendar
 
-A mobile-first web app for tracking daily habits on a calendar. Built with
-React, TypeScript, Vite, and Tailwind CSS v4. Data is stored locally in the
-browser for now, behind a repository interface that can be swapped for a backend.
+A mobile-first web app for tracking daily habits on a calendar, in the spirit of
+Apple Calendar. Pick a day, tick the habits you did, and the calendar fills with
+small colored dots that show your consistency over time.
+
+- Year, Month, Week, and Day views with view-aware navigation, swipe on touch,
+  and a date picker on the period title
+- A draggable habit panel (collapsed, half, full) that always follows the active day
+- Habit filter, add/rename/recolor/re-icon/delete habits, Sunday or Monday weeks
+- System, Light, and Dark themes; keyboard and screen reader friendly
+
+Built with React, TypeScript, Vite, Tailwind CSS v4, Radix primitives, date-fns,
+and Lucide icons. Data is stored locally in the browser for now, behind a
+repository interface that can be swapped for a backend.
 
 ## Getting started
 
@@ -32,11 +42,11 @@ a committed `.env.example` and keep real values in an ignored `.env`.
 ```
 src/
   components/
-    ui/           Reusable primitives (Button, Dialog, BottomSheet, ...)
-    calendar/     Calendar feature components
-    habits/       Habit feature components
-    navigation/   App shell and navigation
-    settings/     Settings feature components
+    ui/           Primitives: Button, IconButton, Checkbox, Dialog, BottomSheet, ...
+    calendar/     Month/Week/Day/Year views, CalendarDayCell, MiniMonth
+    habits/       HabitRow, HabitIndicator, HabitFilterBar, HabitPanel, HabitManager
+    navigation/   TopNavigation, DateNavigator, PeriodPicker
+    settings/     SettingsDialog and its sections
   hooks/          React hooks (theme, today, calendar grids, media queries)
   lib/
     calendar/     Pure date logic: date keys, ranges, navigation, formatting
@@ -58,7 +68,10 @@ Dependencies point one way: `components` → `hooks`/`state` → `lib` → `type
 All visual values live in [`src/styles/tokens.css`](src/styles/tokens.css) inside a
 Tailwind `@theme` block, so each token is both a CSS variable
 (`--color-surface`) and a utility (`bg-surface`). Tailwind's default palette is
-removed, so only semantic colors exist. Habit colors are `--color-habit-*`.
+removed, so only semantic colors exist. Habit colors are a palette
+(`--color-habit-green`, `-orange`, ...) with aliases for the default habits
+(`--color-habit-sport`, ...). Typography uses roles (`text-title`, `text-body`,
+`text-date`, `text-weekday`, ...), and motion uses `--duration-*` / `--ease-*`.
 
 Dark mode overrides the same variables under `:root[data-theme='dark']`.
 The user's preference (`light` / `dark` / `system`) is stored in settings and
@@ -72,6 +85,11 @@ on [Radix](https://www.radix-ui.com/) for keyboard support, focus management,
 and ARIA. Variants use `class-variance-authority` (e.g.
 `<Button variant="ghost" size="sm">`). Import from `@/components/ui`.
 
+- `Dialog` is the modal (a bottom sheet on phones, a centered card from `sm`).
+- `Drawer` is a modal panel anchored to the bottom at every size.
+- `BottomSheet` is the non-modal, draggable panel used by the habit tracker.
+- `ConfirmDialog` guards destructive actions.
+
 ### Dates
 
 `lib/calendar` wraps `date-fns`. Completions are keyed by a local-time
@@ -82,7 +100,11 @@ days across timezones. Display formatting uses `Intl`.
 
 `state/` is a single `useReducer` exposed through context, with state and
 dispatch in separate contexts. Components use `useAppState()` and
-`useAppActions()`; no external state library.
+`useAppActions()`; no external state library. The active date drives
+everything: the calendar shows the period containing it, and the habit panel
+shows its habits, so they can never disagree. Calendar day cells are memoized
+and receive per-day completion objects that keep their identity, so toggling a
+habit re-renders only that day.
 
 Persistence goes through the async `AppRepository` interface
 (`lib/storage/repository.ts`). The current implementation stores versioned,
