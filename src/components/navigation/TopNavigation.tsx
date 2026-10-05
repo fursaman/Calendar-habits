@@ -108,7 +108,7 @@ export function TopNavigation() {
           )}
         >
           <div className="min-h-0 overflow-hidden">
-            <HabitFilterBar className="pb-2.5 lg:px-6" />
+            <HabitFilterBar className="pt-1 pb-2.5 lg:px-6" />
           </div>
         </div>
       </div>
