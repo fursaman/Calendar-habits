@@ -38,6 +38,7 @@ export type AppAction =
   | { type: 'habits/add'; habit: Habit }
   | { type: 'habits/update'; habitId: HabitId; changes: Partial<Omit<Habit, 'id' | 'createdAt'>> }
   | { type: 'habits/remove'; habitId: HabitId }
+  | { type: 'habits/reorder'; habitId: HabitId; toIndex: number }
   | { type: 'completions/toggle'; date: DateKey; habitId: HabitId }
   | { type: 'completions/set'; date: DateKey; habitId: HabitId; completed: boolean }
   | { type: 'settings/update'; changes: Partial<UserSettings> }

@@ -43,6 +43,14 @@ export function appReducer(state: AppState, action: AppAction): AppState {
           habit.id === action.habitId ? { ...habit, ...action.changes } : habit,
         ),
       }
+    case 'habits/reorder': {
+      const from = state.habits.findIndex((habit) => habit.id === action.habitId)
+      if (from === -1 || from === action.toIndex) return state
+      const habits = [...state.habits]
+      const [moved] = habits.splice(from, 1)
+      habits.splice(Math.max(0, Math.min(action.toIndex, habits.length)), 0, moved!)
+      return { ...state, habits }
+    }
     case 'habits/remove': {
       const habits = state.habits.filter((habit) => habit.id !== action.habitId)
       return {

@@ -42,6 +42,16 @@ describe('appReducer', () => {
     expect(appReducer(shown, { type: 'celebration/dismiss' }).celebration).toBeNull()
   })
 
+  it('reorders habits', () => {
+    const state = appReducer(initial, { type: 'habits/reorder', habitId: 'reading', toIndex: 0 })
+    expect(state.habits.map((habit) => habit.id)).toEqual([
+      'reading',
+      'sport',
+      'healthy-eating',
+      'no-doomscrolling',
+    ])
+  })
+
   it('removing a habit clears its completions and filter', () => {
     const date = '2026-10-05' as DateKey
     let state = appReducer(initial, { type: 'completions/toggle', date, habitId: 'sport' })

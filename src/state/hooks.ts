@@ -39,6 +39,8 @@ export function useAppActions() {
         dispatch({ type: 'habits/update', ...payload }),
       removeHabit: (habitId: Payload<'habits/remove'>['habitId']) =>
         dispatch({ type: 'habits/remove', habitId }),
+      reorderHabit: (payload: Payload<'habits/reorder'>) =>
+        dispatch({ type: 'habits/reorder', ...payload }),
 
       toggleCompletion: (payload: Payload<'completions/toggle'>) =>
         dispatch({ type: 'completions/toggle', ...payload }),
