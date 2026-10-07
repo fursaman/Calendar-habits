@@ -1,10 +1,17 @@
 import { DEFAULT_HABITS } from '@/lib/habits'
+import { createPremiumStatus } from '@/lib/premium'
 import { DEFAULT_SETTINGS } from '@/lib/settings'
 
 import { getBrowserStorage, type KeyValueStorage } from './key-value-storage'
 import { createPersistedValue, type PersistenceError } from './persisted-value'
 import type { AppRepository } from './repository'
-import { migrateHabits, parseCompletionMap, parseHabits, parseSettings } from './validators'
+import {
+  migrateHabits,
+  parseCompletionMap,
+  parseHabits,
+  parsePremiumStatus,
+  parseSettings,
+} from './validators'
 
 const NAMESPACE = 'habit-calendar'
 
@@ -13,10 +20,11 @@ export const STORAGE_KEYS = {
   habits: `${NAMESPACE}:habits`,
   completions: `${NAMESPACE}:completions`,
   settings: `${NAMESPACE}:settings`,
+  premium: `${NAMESPACE}:premium`,
 } as const
 
 /** Bump a version and add a migration when a stored shape changes. */
-const VERSIONS = { habits: 2, completions: 1, settings: 1 } as const
+const VERSIONS = { habits: 2, completions: 1, settings: 1, premium: 1 } as const
 
 function reportError(error: PersistenceError) {
   console.warn(`[storage] ${error.message} (${error.key})`, error.cause)
@@ -53,14 +61,26 @@ export function createLocalRepository(
     onError: reportError,
   })
 
+  const premium = createPersistedValue({
+    storage,
+    key: STORAGE_KEYS.premium,
+    version: VERSIONS.premium,
+    parse: parsePremiumStatus,
+    fallback: () => createPremiumStatus(),
+    onError: reportError,
+  })
+
   return {
     load: async () => ({
       habits: habits.read(),
       completions: completions.read(),
       settings: settings.read(),
+      // Written back at once so the trial start date is fixed on first launch.
+      premium: premium.update((current) => current),
     }),
     saveHabits: async (value) => habits.write(value),
     saveCompletions: async (value) => completions.write(value),
     saveSettings: async (value) => settings.write(value),
+    savePremium: async (value) => premium.write(value),
   }
 }

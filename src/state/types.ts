@@ -5,6 +5,8 @@ import type {
   Habit,
   HabitFilter,
   HabitId,
+  PremiumPurchase,
+  PremiumStatus,
   UserSettings,
 } from '@/types'
 
@@ -19,6 +21,7 @@ export type AppState = {
   habits: Habit[]
   completions: CompletionMap
   settings: UserSettings
+  premium: PremiumStatus
   /** Session-only UI state */
   activeDate: DateKey
   view: CalendarView
@@ -26,6 +29,7 @@ export type AppState = {
   panel: PanelSnap
   settingsOpen: boolean
   analyticsOpen: boolean
+  paywallOpen: boolean
   /** Streak popup shown after checking today's habit; null when hidden. */
   celebration: StreakCelebration | null
 }
@@ -45,5 +49,7 @@ export type AppAction =
   | { type: 'panel/setSnap'; snap: PanelSnap }
   | { type: 'settings/setOpen'; open: boolean }
   | { type: 'analytics/setOpen'; open: boolean }
+  | { type: 'paywall/setOpen'; open: boolean }
+  | { type: 'premium/purchase'; purchase: PremiumPurchase }
   | { type: 'celebration/show'; celebration: StreakCelebration }
   | { type: 'celebration/dismiss' }

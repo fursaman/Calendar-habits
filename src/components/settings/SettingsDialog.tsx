@@ -1,4 +1,5 @@
 import { HabitManager } from '@/components/habits/HabitManager'
+import { PremiumCard } from '@/components/premium/PremiumCard'
 import { Dialog, DialogContent } from '@/components/ui'
 import { useAppActions, useAppState } from '@/state'
 
@@ -14,6 +15,7 @@ export function SettingsDialog() {
     <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
       <DialogContent title="Settings" className="sm:max-w-lg">
         <div className="space-y-7 pt-1">
+          <PremiumCard />
           <AppearanceSettings />
           <SettingsSection title="Habits">
             <HabitManager />

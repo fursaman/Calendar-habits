@@ -4,6 +4,7 @@ import { HabitPanel } from '@/components/habits/HabitPanel'
 import { StreakGradient } from '@/components/habits/StreakBadge'
 import { StreakPopup } from '@/components/habits/StreakPopup'
 import { TopNavigation } from '@/components/navigation/TopNavigation'
+import { PaywallDialog } from '@/components/premium/PaywallDialog'
 import { SettingsDialog } from '@/components/settings/SettingsDialog'
 import { TooltipProvider } from '@/components/ui'
 import { useThemeSync } from '@/hooks'
@@ -22,6 +23,7 @@ export function App() {
         <HabitPanel />
         <SettingsDialog />
         <AnalyticsDialog />
+        <PaywallDialog />
         <StreakGradient />
         <StreakPopup />
       </div>

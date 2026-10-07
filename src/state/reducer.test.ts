@@ -7,7 +7,12 @@ import type { DateKey } from '@/types'
 import { appReducer, createInitialState } from './reducer'
 
 const initial = createInitialState(
-  { habits: [...DEFAULT_HABITS], completions: {}, settings: DEFAULT_SETTINGS },
+  {
+    habits: [...DEFAULT_HABITS],
+    completions: {},
+    settings: DEFAULT_SETTINGS,
+    premium: { trialStartedOn: '2026-10-05' as DateKey, purchase: null },
+  },
   new Date(2026, 9, 5, 23, 59),
 )
 
@@ -61,5 +66,13 @@ describe('appReducer', () => {
     // Falls back to the first remaining habit.
     expect(state.habitFilter).toBe('healthy-eating')
     expect(state.habits.some((habit) => habit.id === 'sport')).toBe(false)
+  })
+
+  it('records a purchase and closes the paywall', () => {
+    const open = appReducer(initial, { type: 'paywall/setOpen', open: true })
+    const purchase = { plan: 'lifetime' as const, purchasedOn: '2026-10-07' as DateKey }
+    const bought = appReducer(open, { type: 'premium/purchase', purchase })
+    expect(bought.premium.purchase).toEqual(purchase)
+    expect(bought.paywallOpen).toBe(false)
   })
 })
