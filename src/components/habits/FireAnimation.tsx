@@ -2,10 +2,32 @@ import { useEffect, useRef } from 'react'
 
 import { cn } from '@/lib/utils'
 
+const importFire = () =>
+  Promise.all([
+    import('lottie-web/build/player/lottie_light'),
+    import('@/assets/animations/fire.json'),
+  ])
+
+let fireModules: ReturnType<typeof importFire> | undefined
+
+/** Loads the Lottie player and the fire data once, shared by every fire. */
+function loadFire() {
+  fireModules ??= importFire()
+  return fireModules
+}
+
+// Fetch the fire as soon as the browser is idle after startup, so it is ready
+// before the first streak popup opens instead of loading while it shows.
+if (typeof window !== 'undefined') {
+  const preload = () => void loadFire()
+  if ('requestIdleCallback' in window) window.requestIdleCallback(preload, { timeout: 2000 })
+  else globalThis.setTimeout(preload, 1000)
+}
+
 /**
- * The animated fire (Lottie). The player and animation data load on first
- * use, so they stay out of the main bundle. With reduced motion it shows a
- * still frame.
+ * The animated fire (Lottie). The player and animation data are split out of
+ * the main bundle and preloaded once the app is idle. With reduced motion it
+ * shows a still frame.
  */
 export function FireAnimation({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -16,10 +38,7 @@ export function FireAnimation({ className }: { className?: string }) {
     let disposed = false
     let destroy: (() => void) | undefined
 
-    void Promise.all([
-      import('lottie-web/build/player/lottie_light'),
-      import('@/assets/animations/fire.json'),
-    ]).then(([{ default: lottie }, { default: animationData }]) => {
+    void loadFire().then(([{ default: lottie }, { default: animationData }]) => {
       if (disposed) return
       const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches
       const animation = lottie.loadAnimation({
