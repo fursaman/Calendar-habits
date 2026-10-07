@@ -27,6 +27,7 @@ export function AppStateProvider({ initialData, repository, children }: AppState
   usePersist(state.habits, repository.saveHabits)
   usePersist(state.completions, repository.saveCompletions)
   usePersist(state.settings, repository.saveSettings)
+  usePersist(state.premium, repository.savePremium)
 
   return (
     <AppStateContext value={state}>

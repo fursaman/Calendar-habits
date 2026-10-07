@@ -14,6 +14,7 @@ export function createInitialState(data: AppData, now: Date = new Date()): AppSt
     panel: 'collapsed',
     settingsOpen: false,
     analyticsOpen: false,
+    paywallOpen: false,
     celebration: null,
   }
 }
@@ -86,6 +87,14 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, settingsOpen: action.open }
     case 'analytics/setOpen':
       return { ...state, analyticsOpen: action.open }
+    case 'paywall/setOpen':
+      return { ...state, paywallOpen: action.open }
+    case 'premium/purchase':
+      return {
+        ...state,
+        premium: { ...state.premium, purchase: action.purchase },
+        paywallOpen: false,
+      }
     case 'celebration/show':
       return { ...state, celebration: action.celebration }
     case 'celebration/dismiss':

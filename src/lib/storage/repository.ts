@@ -1,9 +1,10 @@
-import type { CompletionMap, Habit, UserSettings } from '@/types'
+import type { CompletionMap, Habit, PremiumStatus, UserSettings } from '@/types'
 
 export type AppData = {
   habits: Habit[]
   completions: CompletionMap
   settings: UserSettings
+  premium: PremiumStatus
 }
 
 /**
@@ -15,4 +16,5 @@ export type AppRepository = {
   saveHabits(habits: Habit[]): Promise<void>
   saveCompletions(completions: CompletionMap): Promise<void>
   saveSettings(settings: UserSettings): Promise<void>
+  savePremium(premium: PremiumStatus): Promise<void>
 }

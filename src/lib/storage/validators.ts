@@ -5,11 +5,19 @@ import type {
   Habit,
   HabitColor,
   HabitIcon,
+  PremiumPurchase,
+  PremiumStatus,
   ThemePreference,
   UserSettings,
   Weekday,
 } from '@/types'
-import { CALENDAR_VIEWS, HABIT_COLORS, HABIT_ICONS, THEME_PREFERENCES } from '@/types'
+import {
+  CALENDAR_VIEWS,
+  HABIT_COLORS,
+  HABIT_ICONS,
+  PREMIUM_PLANS,
+  THEME_PREFERENCES,
+} from '@/types'
 
 /*
  * Runtime validation for data read from storage or a future API.
@@ -114,4 +122,16 @@ export function parseSettings(value: unknown, defaults: UserSettings): UserSetti
     calendar: parseCalendarPreferences(value.calendar, defaults.calendar),
     sounds: typeof value.sounds === 'boolean' ? value.sounds : defaults.sounds,
   }
+}
+
+function parsePremiumPurchase(value: unknown): PremiumPurchase | null {
+  if (!isRecord(value)) return null
+  const { plan, purchasedOn } = value
+  if (!isOneOf(PREMIUM_PLANS, plan) || !isDateKey(purchasedOn)) return null
+  return { plan, purchasedOn }
+}
+
+export function parsePremiumStatus(value: unknown): PremiumStatus | null {
+  if (!isRecord(value) || !isDateKey(value.trialStartedOn)) return null
+  return { trialStartedOn: value.trialStartedOn, purchase: parsePremiumPurchase(value.purchase) }
 }

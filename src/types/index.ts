@@ -10,6 +10,8 @@ export type {
   HabitId,
 } from './habit'
 export { HABIT_COLORS, HABIT_ICONS } from './habit'
+export type { PremiumPlan, PremiumPurchase, PremiumStatus } from './premium'
+export { PREMIUM_PLANS } from './premium'
 export type {
   CalendarPreferences,
   CalendarView,

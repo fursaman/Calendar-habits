@@ -76,6 +76,19 @@
   /* Streak flame gradient. */
   --color-streak-from: oklch(0.82 0.16 85);
   --color-streak-to: oklch(0.62 0.22 30);
+  /* Premium: the paywall and Premium card stay dark in both themes, lit by drifting glows. */
+  --color-premium: oklch(0.14 0.03 300);
+  --color-premium-raised: oklch(0.19 0.04 300);
+  --color-premium-foreground: oklch(0.99 0 0);
+  --color-premium-cta: oklch(0.97 0.012 300);
+  --color-premium-cta-foreground: oklch(0.17 0.04 300);
+  --color-premium-violet: oklch(0.54 0.25 293);
+  --color-premium-pink: oklch(0.59 0.22 0);
+  --color-premium-blue: oklch(0.55 0.22 263);
+  --color-premium-teal: oklch(0.7 0.13 182);
+  --color-premium-indigo: oklch(0.51 0.23 277);
+  --color-premium-fuchsia: oklch(0.59 0.26 323);
+  --color-premium-star: oklch(0.84 0.14 85);
 
   /* Semantic habit aliases for the default habits. */
   --color-habit-sport: var(--color-habit-green);
@@ -212,7 +225,131 @@
   /* Draws the tick after the circle has popped in. */
   --animate-check-draw: check-draw var(--duration-emphasized) var(--ease-standard)
     var(--duration-fast) both;
+  /* Premium glows drift and fade so the colors keep shifting. */
+  --animate-aura-1: aura-1 14s ease-in-out infinite;
+  --animate-aura-2: aura-2 17s ease-in-out infinite;
+  --animate-aura-3: aura-3 15s ease-in-out infinite;
+  --animate-aura-4: aura-4 19s ease-in-out infinite;
+  --animate-aura-5: aura-5 16s ease-in-out infinite;
+  --animate-aura-6: aura-6 21s ease-in-out infinite;
+  --animate-border-spin: border-spin 3.5s linear infinite;
+  --animate-premium-glow: premium-glow 6s ease-in-out infinite;
+  --animate-shine: shine 4.5s ease-in-out infinite;
+  --animate-shimmer: shimmer 3s linear infinite;
+  --animate-review-in: review-in 500ms var(--ease-standard) both;
 
+  @keyframes aura-1 {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 1;
+    }
+    33% {
+      transform: translate3d(35%, 18%, 0) scale(1.2);
+      opacity: 0.55;
+    }
+    66% {
+      transform: translate3d(10%, 40%, 0) scale(0.9);
+      opacity: 0.9;
+    }
+  }
+  @keyframes aura-2 {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 0.6;
+    }
+    40% {
+      transform: translate3d(-40%, 25%, 0) scale(1.15);
+      opacity: 1;
+    }
+    75% {
+      transform: translate3d(-15%, -8%, 0) scale(0.85);
+      opacity: 0.75;
+    }
+  }
+  @keyframes aura-3 {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+      opacity: 0.9;
+    }
+    50% {
+      transform: translate3d(-30%, 30%, 0) scale(1.25);
+      opacity: 0.4;
+    }
+  }
+  @keyframes aura-4 {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+      opacity: 0.3;
+    }
+    45% {
+      transform: translate3d(-35%, -25%, 0) scale(1.2);
+      opacity: 0.95;
+    }
+  }
+  @keyframes aura-5 {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+      opacity: 0.5;
+    }
+    50% {
+      transform: translate3d(45%, -15%, 0) scale(1.2);
+      opacity: 1;
+    }
+  }
+  @keyframes aura-6 {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+      opacity: 0.8;
+    }
+    50% {
+      transform: translate3d(-35%, -20%, 0) scale(0.9);
+      opacity: 0.35;
+    }
+  }
+  @keyframes border-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes premium-glow {
+    0%,
+    100% {
+      box-shadow:
+        0 0 12px 0 oklch(0.59 0.22 0 / 0.3),
+        0 0 28px 2px oklch(0.54 0.25 293 / 0.16);
+    }
+    50% {
+      box-shadow:
+        0 0 12px 0 oklch(0.68 0.15 230 / 0.3),
+        0 0 28px 2px oklch(0.7 0.13 182 / 0.15);
+    }
+  }
+  @keyframes shine {
+    from {
+      transform: translate3d(-100%, 0, 0);
+    }
+    55%,
+    100% {
+      transform: translate3d(100%, 0, 0);
+    }
+  }
+  @keyframes review-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 8px, 0);
+    }
+  }
+  @keyframes shimmer {
+    to {
+      background-position: -200% 0;
+    }
+  }
   @keyframes fade-in {
     from {
       opacity: 0;
