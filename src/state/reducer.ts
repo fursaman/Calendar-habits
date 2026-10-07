@@ -15,6 +15,7 @@ export function createInitialState(data: AppData, now: Date = new Date()): AppSt
     settingsOpen: false,
     analyticsOpen: false,
     paywallOpen: false,
+    paywallFromSettings: false,
     celebration: null,
   }
 }
@@ -88,16 +89,34 @@ export function appReducer(state: AppState, action: AppAction): AppState {
     case 'analytics/setOpen':
       return { ...state, analyticsOpen: action.open }
     case 'paywall/setOpen':
-      return { ...state, paywallOpen: action.open }
+      return action.open
+        ? {
+            ...state,
+            paywallOpen: true,
+            paywallFromSettings: state.settingsOpen,
+            settingsOpen: false,
+          }
+        : closePaywall(state)
     case 'premium/purchase':
-      return {
+      return closePaywall({
         ...state,
         premium: { ...state.premium, purchase: action.purchase },
-        paywallOpen: false,
-      }
+      })
+    case 'premium/reset':
+      return { ...state, premium: { ...state.premium, purchase: null } }
     case 'celebration/show':
       return { ...state, celebration: action.celebration }
     case 'celebration/dismiss':
       return state.celebration ? { ...state, celebration: null } : state
+  }
+}
+
+/** Closes the paywall and brings Settings back if the paywall was opened from there. */
+function closePaywall(state: AppState): AppState {
+  return {
+    ...state,
+    paywallOpen: false,
+    paywallFromSettings: false,
+    settingsOpen: state.settingsOpen || state.paywallFromSettings,
   }
 }

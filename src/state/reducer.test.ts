@@ -75,4 +75,23 @@ describe('appReducer', () => {
     expect(bought.premium.purchase).toEqual(purchase)
     expect(bought.paywallOpen).toBe(false)
   })
+
+  it('hides Settings behind the paywall and brings it back on close', () => {
+    const settings = appReducer(initial, { type: 'settings/setOpen', open: true })
+    const paywall = appReducer(settings, { type: 'paywall/setOpen', open: true })
+    expect(paywall.settingsOpen).toBe(false)
+    expect(paywall.paywallOpen).toBe(true)
+    const closed = appReducer(paywall, { type: 'paywall/setOpen', open: false })
+    expect(closed.settingsOpen).toBe(true)
+    expect(closed.paywallOpen).toBe(false)
+  })
+
+  it('returns to Settings after a purchase and can reset it for testing', () => {
+    const settings = appReducer(initial, { type: 'settings/setOpen', open: true })
+    const paywall = appReducer(settings, { type: 'paywall/setOpen', open: true })
+    const purchase = { plan: 'yearly' as const, purchasedOn: '2026-10-07' as DateKey }
+    const bought = appReducer(paywall, { type: 'premium/purchase', purchase })
+    expect(bought.settingsOpen).toBe(true)
+    expect(appReducer(bought, { type: 'premium/reset' }).premium.purchase).toBeNull()
+  })
 })

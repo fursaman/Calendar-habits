@@ -57,6 +57,7 @@ export function useAppActions() {
       setPaywallOpen: (open: boolean) => dispatch({ type: 'paywall/setOpen', open }),
       recordPurchase: (purchase: Payload<'premium/purchase'>['purchase']) =>
         dispatch({ type: 'premium/purchase', purchase }),
+      resetPurchase: () => dispatch({ type: 'premium/reset' }),
       celebrate: (celebration: Payload<'celebration/show'>['celebration']) =>
         dispatch({ type: 'celebration/show', celebration }),
       dismissCelebration: () => dispatch({ type: 'celebration/dismiss' }),

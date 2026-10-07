@@ -1,5 +1,5 @@
 import { Check } from 'lucide-react'
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
 
 import { useToday } from '@/hooks'
 import { formatMonthDayShort, fromDateKey } from '@/lib/calendar'
@@ -16,17 +16,41 @@ import { useAppActions, useAppState } from '@/state'
 import { PremiumAura } from './PremiumAura'
 import { PremiumButton } from './PremiumButton'
 
+/** Taps on the active Premium card that reset the purchase while purchases are local. */
+const RESET_TAPS = 10
+/** Taps further apart than this start the count again. */
+const TAP_GAP_MS = 800
+
+function useTapSequence(count: number, onComplete: () => void) {
+  const taps = useRef({ count: 0, last: 0 })
+  return () => {
+    const now = Date.now()
+    const current = taps.current
+    current.count = now - current.last > TAP_GAP_MS ? 1 : current.count + 1
+    current.last = now
+    if (current.count >= count) {
+      current.count = 0
+      onComplete()
+    }
+  }
+}
+
 /**
  * Top of Settings: the trial countdown with a way to unlock Premium, which
  * shrinks to a quiet status row once Premium is active.
  */
 export function PremiumCard() {
   const { premium } = useAppState()
+  const { resetPurchase } = useAppActions()
   const today = useToday()
   const state = useMemo(() => getPremiumState(premium, fromDateKey(today)), [premium, today])
+  const onSecretTap = useTapSequence(RESET_TAPS, resetPurchase)
 
   return (
+    // Hidden test shortcut: tapping the Premium card 10 times undoes the purchase.
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
     <section
+      onClick={state.kind === 'premium' ? onSecretTap : undefined}
       aria-label="Premium"
       className="relative isolate overflow-hidden rounded-[1.75rem] bg-premium p-4 text-premium-foreground shadow-[0_0_0_4px_oklch(0_0_0/0.12)]"
     >

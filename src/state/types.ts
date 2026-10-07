@@ -30,6 +30,8 @@ export type AppState = {
   settingsOpen: boolean
   analyticsOpen: boolean
   paywallOpen: boolean
+  /** Settings closes while the paywall is open and comes back when it closes. */
+  paywallFromSettings: boolean
   /** Streak popup shown after checking today's habit; null when hidden. */
   celebration: StreakCelebration | null
 }
@@ -51,5 +53,6 @@ export type AppAction =
   | { type: 'analytics/setOpen'; open: boolean }
   | { type: 'paywall/setOpen'; open: boolean }
   | { type: 'premium/purchase'; purchase: PremiumPurchase }
+  | { type: 'premium/reset' }
   | { type: 'celebration/show'; celebration: StreakCelebration }
   | { type: 'celebration/dismiss' }
