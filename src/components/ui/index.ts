@@ -23,6 +23,7 @@ export {
 export {
   DropdownMenu,
   DropdownMenuContent,
+  type DropdownMenuContentProps,
   DropdownMenuGroup,
   DropdownMenuItem,
   type DropdownMenuItemProps,

@@ -40,7 +40,7 @@ function isWeekday(value: unknown): value is Weekday {
 
 export function parseHabit(value: unknown): Habit | null {
   if (!isRecord(value)) return null
-  const { id, name, color, icon, createdAt } = value
+  const { id, name, color, icon, promise, targetDate, showPromise, createdAt } = value
   if (typeof id !== 'string' || id === '') return null
   if (typeof name !== 'string' || name.trim() === '') return null
   if (!isOneOf<HabitColor>(HABIT_COLORS, color)) return null
@@ -53,6 +53,9 @@ export function parseHabit(value: unknown): Habit | null {
     createdAt,
     // An unknown icon (e.g. removed from the set) falls back to the color dot.
     ...(isOneOf<HabitIcon>(HABIT_ICONS, icon) ? { icon } : {}),
+    ...(typeof promise === 'string' && promise.trim() !== '' ? { promise } : {}),
+    ...(isDateKey(targetDate) ? { targetDate } : {}),
+    ...(typeof showPromise === 'boolean' ? { showPromise } : {}),
   }
 }
 

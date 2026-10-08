@@ -98,7 +98,8 @@ export function PeriodScroller({ date, unit, weekStartsOn, renderPeriod }: Perio
   return (
     <div
       ref={scrollerRef}
-      className="scrollbar-none h-full snap-y snap-mandatory overflow-y-auto overscroll-contain"
+      // Vertical pans scroll; sideways swipes are left to the calendar to switch views.
+      className="scrollbar-none h-full touch-pan-y snap-y snap-mandatory overflow-y-auto overscroll-contain"
     >
       {periods.map((start) => (
         <section key={toDateKey(start)} className="h-full snap-start snap-always">

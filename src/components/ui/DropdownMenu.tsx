@@ -9,11 +9,20 @@ export const DropdownMenu = MenuPrimitive.Root
 export const DropdownMenuTrigger = MenuPrimitive.Trigger
 export const DropdownMenuGroup = MenuPrimitive.Group
 
+export type DropdownMenuContentProps = ComponentProps<typeof MenuPrimitive.Content> & {
+  /**
+   * `raised` lifts the menu a step lighter in dark mode, for menus that open
+   * over a dialog, where the default surface sits too close to the sheet.
+   */
+  tone?: 'default' | 'raised'
+}
+
 export function DropdownMenuContent({
   className,
   sideOffset = 6,
+  tone = 'default',
   ...props
-}: ComponentProps<typeof MenuPrimitive.Content>) {
+}: DropdownMenuContentProps) {
   return (
     <MenuPrimitive.Portal>
       <MenuPrimitive.Content
@@ -22,6 +31,7 @@ export function DropdownMenuContent({
         className={cn(
           floatingSurfaceClassName,
           'min-w-44 origin-(--radix-dropdown-menu-content-transform-origin) p-1',
+          tone === 'raised' && 'dark:bg-surface-tertiary dark:[&_[data-highlighted]]:bg-border',
           className,
         )}
         {...props}

@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { useSwipe } from '@/hooks'
 import { getPeriodKey } from '@/lib/calendar'
 import { cn } from '@/lib/utils'
-import { useAppState, useCalendarNavigation } from '@/state'
+import { useAppActions, useAppState, useCalendarNavigation } from '@/state'
 import type { CalendarView as View, Weekday } from '@/types'
+import { CALENDAR_VIEWS } from '@/types'
 
 import { DayCalendar } from './DayCalendar'
 import { MonthCalendar } from './MonthCalendar'
@@ -27,12 +28,22 @@ const TRANSITION_CLASS: Record<Transition, string> = {
  * Renders the active view and animates between periods: a short slide in the
  * direction of travel when the period changes, a soft fade when the view
  * changes, and nothing when selecting another day in the same period.
- * Swiping horizontally on touch screens moves between periods.
+ * Swiping horizontally on touch screens switches views: left goes to the more
+ * detailed view (Year, Month, Week, Day), right goes back.
  */
 export function CalendarView({ className }: { className?: string }) {
   const { settings } = useAppState()
-  const { date, view, go } = useCalendarNavigation()
-  const swipe = useSwipe(go)
+  const { date, view } = useCalendarNavigation()
+  const { setView } = useAppActions()
+  const swipe = useSwipe(
+    useCallback(
+      (direction: -1 | 1) => {
+        const next = CALENDAR_VIEWS[CALENDAR_VIEWS.indexOf(view) + direction]
+        if (next) setView(next)
+      },
+      [view, setView],
+    ),
+  )
   const periodKey = getPeriodKey(date, view, settings.calendar.weekStartsOn)
 
   // Derive the transition from the previous render ("adjusting state on prop change").

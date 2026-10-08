@@ -57,6 +57,11 @@ export function formatShortDate(date: Date, locale?: string): string {
   return getFormatter({ weekday: 'short', month: 'short', day: 'numeric' }, locale).format(date)
 }
 
+/** "Oct 5, 2026" */
+export function formatMediumDate(date: Date, locale?: string): string {
+  return getFormatter({ month: 'short', day: 'numeric', year: 'numeric' }, locale).format(date)
+}
+
 /** "October 5" */
 export function formatMonthDay(date: Date, locale?: string): string {
   return getFormatter({ month: 'long', day: 'numeric' }, locale).format(date)

@@ -23,6 +23,7 @@ export const DEFAULT_HABITS: readonly Habit[] = [
 ]
 
 export const MAX_HABIT_NAME_LENGTH = 40
+export const MAX_PROMISE_LENGTH = 120
 
 /** First palette color not used by an existing habit, for new habits. */
 export function pickNextColor(used: readonly HabitColor[], palette: readonly HabitColor[]) {

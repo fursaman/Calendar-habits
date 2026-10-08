@@ -1,4 +1,4 @@
-import { format, isValid, parse } from 'date-fns'
+import { addDays, format, isValid, parse } from 'date-fns'
 
 import type { DateKey } from '@/types'
 
@@ -28,4 +28,9 @@ export function isDateKey(value: unknown): value is DateKey {
 
 export function todayKey(now: Date = new Date()): DateKey {
   return toDateKey(now)
+}
+
+/** The earliest day that counts as the future. */
+export function tomorrowKey(now: Date = new Date()): DateKey {
+  return toDateKey(addDays(now, 1))
 }

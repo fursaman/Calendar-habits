@@ -83,6 +83,12 @@ export type Habit = {
   name: string
   color: HabitColor
   icon?: HabitIcon
+  /** What the user promises themselves, shown after "I promise to myself". */
+  promise?: string
+  /** Day the promise should be kept by. */
+  targetDate?: DateKey
+  /** Show the promise on the calendar. Defaults to on when a promise or date is set. */
+  showPromise?: boolean
   /** ISO 8601 timestamp. */
   createdAt: string
 }

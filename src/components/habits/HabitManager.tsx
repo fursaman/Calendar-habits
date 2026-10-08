@@ -201,7 +201,7 @@ function SortableHabitItem({ habit, onEdit, onDelete }: SortableHabitItemProps) 
             size="sm"
           />
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" tone="raised">
           <DropdownMenuItem onSelect={onEdit}>
             <Pencil aria-hidden="true" />
             Edit
