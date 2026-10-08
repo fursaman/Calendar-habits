@@ -171,15 +171,15 @@ function HabitEditorForm({
               onChange={(event) => setTargetDate(event.target.value)}
             />
           </div>
+          {hasPromise && (
+            <div className="flex min-h-14 items-center justify-between gap-4 rounded-lg bg-surface-secondary px-4 py-2 dark:bg-surface-tertiary/50">
+              <Label htmlFor={ids.showPromise} className="text-body text-foreground">
+                Show promise on calendar
+              </Label>
+              <Toggle id={ids.showPromise} checked={showPromise} onCheckedChange={setShowPromise} />
+            </div>
+          )}
         </div>
-        {hasPromise && (
-          <div className="flex min-h-14 items-center justify-between gap-4 rounded-lg bg-surface-secondary px-4 py-2 dark:bg-surface-tertiary/50">
-            <Label htmlFor={ids.showPromise} className="text-body text-foreground">
-              Show promise on calendar
-            </Label>
-            <Toggle id={ids.showPromise} checked={showPromise} onCheckedChange={setShowPromise} />
-          </div>
-        )}
         <div className="space-y-1">
           <Label id={ids.color}>Color</Label>
           <HabitColorPicker value={color} onValueChange={setColor} labelledBy={ids.color} />

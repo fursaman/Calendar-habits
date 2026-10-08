@@ -34,7 +34,8 @@ export function HabitColorPicker({
       onValueChange={(next) => onValueChange(next as HabitColor)}
       aria-labelledby={labelledBy}
       orientation="horizontal"
-      className="grid grid-cols-5 justify-items-center gap-3 sm:grid-cols-10 sm:gap-2"
+      // Swatches line up with the label's edges; the padding leaves room for the selection ring.
+      className="-mx-1 grid grid-cols-[repeat(5,auto)] justify-between gap-y-3 p-1 sm:grid-cols-[repeat(10,auto)] sm:gap-y-2"
     >
       {HABIT_COLORS.map((color) => (
         <RadioGroup.Item
