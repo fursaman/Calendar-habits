@@ -180,11 +180,11 @@ function HabitEditorForm({
             </div>
           )}
         </div>
-        <div className="space-y-1">
+        <div className="space-y-3">
           <Label id={ids.color}>Color</Label>
           <HabitColorPicker value={color} onValueChange={setColor} labelledBy={ids.color} />
         </div>
-        <div className="space-y-1">
+        <div className="space-y-3">
           <Label id={ids.icon}>Icon</Label>
           <HabitIconPicker
             value={icon}
