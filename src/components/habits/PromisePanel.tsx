@@ -1,4 +1,4 @@
-import { Ellipsis, EyeOff, Pencil } from 'lucide-react'
+import { EllipsisVertical, EyeOff, Pencil } from 'lucide-react'
 import { useState } from 'react'
 
 import targetIconUrl from '@/assets/icons/target.svg'
@@ -37,8 +37,6 @@ export function PromisePanel({ className }: { className?: string }) {
             <PromiseRow
               key={habit.id}
               habit={habit}
-              // With several promises, the habit icon tells them apart.
-              showHabit={promises.length > 1}
               onHide={() => updateHabit({ habitId: habit.id, changes: { showPromise: false } })}
               onEdit={() => setEditing(habit)}
             />
@@ -59,43 +57,44 @@ export function PromisePanel({ className }: { className?: string }) {
 
 type PromiseRowProps = {
   habit: Habit
-  showHabit: boolean
   onHide: () => void
   onEdit: () => void
 }
 
-function PromiseRow({ habit, showHabit, onHide, onEdit }: PromiseRowProps) {
+function PromiseRow({ habit, onHide, onEdit }: PromiseRowProps) {
   const target = habit.targetDate ? fromDateKey(habit.targetDate) : null
 
   return (
-    <li className="flex items-center gap-2 rounded-lg bg-surface-secondary py-1 pr-1 pl-3 text-caption">
-      {showHabit && <HabitGlyph habit={habit} size="sm" className="-ml-1.5 size-5" />}
-      {/* The promise text truncates first so the target date always stays visible. */}
-      <p className="flex min-w-0 flex-1 items-center gap-1 whitespace-nowrap">
-        {habit.promise && (
-          <span className="min-w-0 truncate">
-            <span className="font-medium text-muted-foreground">My promise</span>{' '}
-            <span className="text-foreground">{habit.promise}</span>
-          </span>
-        )}
-        {target && (
-          <span className="flex shrink-0 items-center gap-1 text-muted-foreground">
-            {habit.promise ? 'till' : 'Till'}
-            <img src={targetIconUrl} alt="" width={16} height={16} className="size-4" />
-            <time
-              dateTime={habit.targetDate}
-              title={formatFullDate(target)}
-              className="font-medium text-foreground"
-            >
-              {formatMediumDate(target)}
-            </time>
-          </span>
-        )}
-      </p>
+    <li className="flex items-center gap-2 rounded-lg bg-surface-tertiary py-1 pr-1 pl-1.5 text-caption dark:bg-surface-secondary">
+      <HabitGlyph habit={habit} size="sm" className="size-5" />
+      {habit.promise && (
+        <p className="min-w-0 flex-1 truncate text-foreground">
+          <span className="sr-only">My promise: </span>
+          {habit.promise}
+        </p>
+      )}
+      {target && (
+        // With a promise the date sits on the right; on its own it leads.
+        <p
+          className={cn(
+            'flex shrink-0 items-center gap-1 text-muted-foreground',
+            !habit.promise && 'flex-1',
+          )}
+        >
+          <img src={targetIconUrl} alt="Target date" width={16} height={16} className="size-4" />
+          <time
+            dateTime={habit.targetDate}
+            title={formatFullDate(target)}
+            className="font-medium text-foreground"
+          >
+            {formatMediumDate(target)}
+          </time>
+        </p>
+      )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <IconButton
-            icon={<Ellipsis />}
+            icon={<EllipsisVertical />}
             label={`More options for the ${habit.name} promise`}
             variant="subtle"
             size="sm"

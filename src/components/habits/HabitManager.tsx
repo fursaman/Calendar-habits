@@ -16,7 +16,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Ellipsis, GripVertical, Pencil, Plus, Trash2 } from 'lucide-react'
+import { EllipsisVertical, GripVertical, Pencil, Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 
 import {
@@ -195,7 +195,7 @@ function SortableHabitItem({ habit, onEdit, onDelete }: SortableHabitItemProps) 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <IconButton
-            icon={<Ellipsis />}
+            icon={<EllipsisVertical />}
             label={`More options for ${habit.name}`}
             variant="subtle"
             size="sm"

@@ -123,66 +123,68 @@ function HabitEditorForm({
       }
     >
       <form id={ids.name + '-form'} onSubmit={submit} className="space-y-6 pt-1">
-        <div className="flex items-center gap-3">
-          <HabitGlyph habit={{ color, ...(icon ? { icon } : {}) }} size="lg" />
-          <div className="flex-1 space-y-1.5">
-            <Label htmlFor={ids.name} className="sr-only">
-              Name
-            </Label>
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <HabitGlyph habit={{ color, ...(icon ? { icon } : {}) }} size="lg" />
+            <div className="flex-1 space-y-1.5">
+              <Label htmlFor={ids.name} className="sr-only">
+                Name
+              </Label>
+              <Input
+                ref={nameRef}
+                id={ids.name}
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                placeholder="Habit name"
+                maxLength={MAX_HABIT_NAME_LENGTH}
+                autoComplete="off"
+                enterKeyHint="done"
+                invalid={duplicate}
+                aria-describedby={duplicate ? ids.error : undefined}
+              />
+            </div>
+          </div>
+          {duplicate && (
+            <p id={ids.error} className="-mt-3 text-caption text-destructive">
+              You already have a habit with this name.
+            </p>
+          )}
+          <div className="space-y-1">
+            <Label htmlFor={ids.promise}>I promise to myself</Label>
             <Input
-              ref={nameRef}
-              id={ids.name}
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              placeholder="Habit name"
-              maxLength={MAX_HABIT_NAME_LENGTH}
+              id={ids.promise}
+              value={promise}
+              onChange={(event) => setPromise(event.target.value)}
+              placeholder="e.g. Run a half marathon"
+              maxLength={MAX_PROMISE_LENGTH}
               autoComplete="off"
               enterKeyHint="done"
-              invalid={duplicate}
-              aria-describedby={duplicate ? ids.error : undefined}
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor={ids.targetDate}>Target date</Label>
+            <Input
+              id={ids.targetDate}
+              type="date"
+              value={targetDate}
+              min={minDate}
+              onChange={(event) => setTargetDate(event.target.value)}
             />
           </div>
         </div>
-        {duplicate && (
-          <p id={ids.error} className="-mt-4 text-caption text-destructive">
-            You already have a habit with this name.
-          </p>
-        )}
-        <div className="space-y-2.5">
-          <Label htmlFor={ids.promise}>I promise to myself</Label>
-          <Input
-            id={ids.promise}
-            value={promise}
-            onChange={(event) => setPromise(event.target.value)}
-            placeholder="e.g. Run a half marathon"
-            maxLength={MAX_PROMISE_LENGTH}
-            autoComplete="off"
-            enterKeyHint="done"
-          />
-        </div>
-        <div className="space-y-2.5">
-          <Label htmlFor={ids.targetDate}>Target date</Label>
-          <Input
-            id={ids.targetDate}
-            type="date"
-            value={targetDate}
-            min={minDate}
-            onChange={(event) => setTargetDate(event.target.value)}
-          />
-        </div>
         {hasPromise && (
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex min-h-14 items-center justify-between gap-4 rounded-lg bg-surface-secondary px-4 py-2 dark:bg-surface-tertiary/50">
             <Label htmlFor={ids.showPromise} className="text-body text-foreground">
               Show promise on calendar
             </Label>
             <Toggle id={ids.showPromise} checked={showPromise} onCheckedChange={setShowPromise} />
           </div>
         )}
-        <div className="space-y-2.5">
+        <div className="space-y-1">
           <Label id={ids.color}>Color</Label>
           <HabitColorPicker value={color} onValueChange={setColor} labelledBy={ids.color} />
         </div>
-        <div className="space-y-2.5">
+        <div className="space-y-1">
           <Label id={ids.icon}>Icon</Label>
           <HabitIconPicker
             value={icon}
